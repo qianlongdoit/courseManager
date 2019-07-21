@@ -1,12 +1,27 @@
 import Taro, {Component} from '@tarojs/taro'
-import {View, Button, Text, Picker } from '@tarojs/components'
-import { AtForm } from 'taro-ui'
+import {View, Button, Text, Picker} from '@tarojs/components'
+import {
+    AtTabs,
+    AtTabsPane,
+    AtModal,
+    AtModalHeader,
+    AtModalContent,
+    AtModalAction,
+} from 'taro-ui'
 import {connect} from '@tarojs/redux'
 
 import {add, minus, asyncAdd} from '../../actions/counter'
 
+import UserInfo from '../../components/student-stars/index'
+import DailyTask from '../../components/student-daily-task/index'
+import RewardList from '../../components/student-reward-list/index'
 import './index.less'
 
+const tabList = [
+    {title: '我'},
+    {title: '每日任务'},
+    {title: '兑换奖品'}
+];
 
 @connect(({counter}) => ({
     counter
@@ -22,20 +37,21 @@ import './index.less'
     }
 }))
 class Student extends Component {
+    // constructor (props) {
+    //     super(props);
+    //     options.addGlobalClass = true;
+    // }
 
     config = {
-        navigationBarTitleText: '学生'
+        navigationBarTitleText: '学生',
     }
 
     state = {
-        selector: ['美国', '中国', '巴西', '日本'],
-        selectorChecked: '美国',
-        timeSel: '12:01',
-        dateSel: '2018-04-22'
+        current: 2,
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(this.props, nextProps)
+        // console.log(this.props, nextProps)
     }
 
     componentWillUnmount() {
@@ -48,29 +64,25 @@ class Student extends Component {
     }
 
     render() {
-        const {selector} = this.state;
+        const {current} = this.state;
 
         return (
-            <View className='index'>
-                <View className='page-section'>
-                    <Text>地区选择器</Text>
-                    <View>
-                        <Picker mode='selector' range={selector} onChange={this.onChange}>
-                            <View className='picker'>
-                                当前选择：{this.state.selectorChecked}
-                            </View>
-                        </Picker>
-                    </View>
-                </View>
-            </View>
+            <AtTabs current={current} tabList={tabList} onClick={this.handleChangeTab.bind(this)}>
+                <AtTabsPane current={current} index={0}>
+                    <UserInfo />
+                </AtTabsPane>
+                <AtTabsPane current={current} index={1}>
+                    <DailyTask />
+                </AtTabsPane>
+                <AtTabsPane current={current} index={2}>
+                    <RewardList />
+
+                </AtTabsPane>
+            </AtTabs>
         )
     }
 
-    onChange = e => {
-        this.setState({
-            selectorChecked: this.state.selector[e.detail.value]
-        })
-    }
+    handleChangeTab = value => this.setState({current: value})
 }
 
 export default Student

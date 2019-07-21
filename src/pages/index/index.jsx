@@ -54,7 +54,7 @@ class Index extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(this.props, nextProps)
+        // console.log(this.props, nextProps)
     }
 
     componentWillUnmount() {
@@ -179,14 +179,6 @@ class Index extends Component {
                         <Text>机构</Text>
                     }
                 </AtForm>
-
-
-
-                {/* <navigator url="/pages/student/index">学生</navigator>
-                <navigator url="/pages/teacher/index">老师</navigator>
-                <navigator url="/pages/manager/index">机构人员</navigator>
-                <navigator url="/pages/parents/index">家长</navigator>*/}
-
 
                 {/*<Button className='add_btn' onClick={this.props.add}>+</Button>
                 <Button className='dec_btn' onClick={this.props.dec}>-</Button>
