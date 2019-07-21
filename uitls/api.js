@@ -10,4 +10,9 @@ export default {
     ACCEPT_TASK: 'student/accept_task.do',
     GET_TASK_REWARD: 'student/get_prize.do',
     EXCHANGE_REWARD: 'student/exchange_prize.do',
+
+    GET_RULE: 'teacher/get_rule.do',
+    PUBLISH_RULE: 'teacher/publish.do',
+    EDIT_STAR: 'teacher/bulk_star.do',
+    STUDENT_STATUS: 'teacher/get_students.do',
 }

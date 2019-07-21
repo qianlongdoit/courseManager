@@ -3,10 +3,6 @@ import {View, Button, Text, Picker} from '@tarojs/components'
 import {
     AtTabs,
     AtTabsPane,
-    AtModal,
-    AtModalHeader,
-    AtModalContent,
-    AtModalAction,
 } from 'taro-ui'
 import {connect} from '@tarojs/redux'
 
@@ -67,7 +63,7 @@ class Student extends Component {
         const {current} = this.state;
 
         return (
-            <AtTabs current={current} tabList={tabList} onClick={this.handleChangeTab.bind(this)}>
+            <AtTabs current={current} tabList={tabList} onClick={this.handleChangeTab}>
                 <AtTabsPane current={current} index={0}>
                     <UserInfo />
                 </AtTabsPane>
@@ -76,7 +72,6 @@ class Student extends Component {
                 </AtTabsPane>
                 <AtTabsPane current={current} index={2}>
                     <RewardList />
-
                 </AtTabsPane>
             </AtTabs>
         )

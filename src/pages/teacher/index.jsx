@@ -1,11 +1,21 @@
 import Taro, {Component} from '@tarojs/taro'
 import {View, Button, Text, Picker } from '@tarojs/components'
-import { AtForm } from 'taro-ui'
+import {
+    AtTabs,
+    AtTabsPane,
+} from 'taro-ui'
 import {connect} from '@tarojs/redux'
 
 import {add, minus, asyncAdd} from '../../actions/counter'
 
 import './index.less'
+
+const tabList = [
+    {title: '查看规则'},
+    {title: '任务管理'},
+    {title: '学生评分'},
+    {title: '学生信息'},
+];
 
 
 @connect(({counter}) => ({
@@ -32,7 +42,7 @@ class Student extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(this.props, nextProps)
+        // console.log(this.props, nextProps)
     }
 
     componentWillUnmount() {
@@ -45,22 +55,29 @@ class Student extends Component {
     }
 
     render() {
-        const {selector} = this.state;
+        const {current} = this.state;
 
         return (
             <View className='index'>
-                <View className='page-section'>
-                    <Text>老师</Text>
-                </View>
+                <AtTabs current={current} tabList={tabList} onClick={this.handleChangeTab}>
+                    <AtTabsPane current={current} index={0}>
+                        aaa
+                    </AtTabsPane>
+                    <AtTabsPane current={current} index={1}>
+                        bbb
+                    </AtTabsPane>
+                    <AtTabsPane current={current} index={2}>
+                        ccc
+                    </AtTabsPane>
+                    <AtTabsPane current={current} index={3}>
+                        ddd
+                    </AtTabsPane>
+                </AtTabs>
             </View>
         )
     }
 
-    onChange = e => {
-        this.setState({
-            selectorChecked: this.state.selector[e.detail.value]
-        })
-    }
+    handleChangeTab = value => this.setState({current: value})
 }
 
 export default Student
