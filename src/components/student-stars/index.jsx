@@ -34,7 +34,11 @@ class UserInfo extends Component {
         const {current} = this.state;
 
         return (
-            <View className='user-info'>
+            <View className='student-info'>
+                <View className='h3'>
+                    <Text>个人信息：</Text>
+                </View>
+
                 <View className='list'>
                     累计星数量：
                     <Stars count={4}/>

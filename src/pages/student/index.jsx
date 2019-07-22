@@ -43,7 +43,7 @@ class Student extends Component {
     }
 
     state = {
-        current: 2,
+        current: 0,
     }
 
     componentWillReceiveProps(nextProps) {
