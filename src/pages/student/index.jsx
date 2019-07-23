@@ -6,7 +6,7 @@ import {
 } from 'taro-ui'
 import {connect} from '@tarojs/redux'
 
-import {add, minus, asyncAdd} from '../../actions/counter'
+import {asyncGetStarCount} from '../../actions/counter'
 
 import UserInfo from '../../components/student-stars/index'
 import DailyTask from '../../components/student-daily-task/index'
@@ -22,21 +22,17 @@ const tabList = [
 @connect(({counter}) => ({
     counter
 }), (dispatch) => ({
-    add() {
-        dispatch(add())
-    },
-    dec() {
-        dispatch(minus())
-    },
-    asyncAdd() {
-        dispatch(asyncAdd())
+    // add() {
+    //     dispatch(add())
+    // },
+    // dec() {
+    //     dispatch(minus())
+    // },
+    getStarCount(data) {
+        dispatch(asyncGetStarCount(data))
     }
 }))
 class Student extends Component {
-    // constructor (props) {
-    //     super(props);
-    //     options.addGlobalClass = true;
-    // }
 
     config = {
         navigationBarTitleText: '学生',
@@ -46,26 +42,23 @@ class Student extends Component {
         current: 0,
     }
 
-    componentWillReceiveProps(nextProps) {
-        // console.log(this.props, nextProps)
-    }
-
-    componentWillUnmount() {
-    }
-
     componentDidShow() {
-    }
-
-    componentDidHide() {
+        const {getStarCount} = this.props;
+        getStarCount({});
     }
 
     render() {
         const {current} = this.state;
+        const {counter} = this.props;
+        const {studentStars} = counter;
 
         return (
             <AtTabs current={current} tabList={tabList} onClick={this.handleChangeTab}>
                 <AtTabsPane current={current} index={0}>
-                    <UserInfo />
+                    <UserInfo
+                        title={'个人信息：'}
+                        studentStars={studentStars}
+                    />
                 </AtTabsPane>
                 <AtTabsPane current={current} index={1}>
                     <DailyTask />

@@ -6,23 +6,20 @@ import {
     AtInput,
     AtButton,
     AtTag,
+    AtToast,
 } from 'taro-ui'
-import {add, minus, asyncAdd} from '../../actions/counter'
+import {asyncLogin, login, netError} from '../../actions/counter'
 
 import './index.less'
+import {url} from "../../uitls/config";
+import api from "../../uitls/api";
 
 
 @connect(({counter}) => ({
     counter
 }), (dispatch) => ({
-    add() {
-        dispatch(add())
-    },
-    dec() {
-        dispatch(minus())
-    },
-    asyncAdd() {
-        dispatch(asyncAdd())
+    asyncLogin(data) {
+        dispatch(asyncLogin(data))
     }
 }))
 class Index extends Component {
@@ -32,50 +29,34 @@ class Index extends Component {
     }
 
     state = {
-        // selector: ['学生', '家长', '老师', '机构'],
+        showToast: false,
+        info: {},
         selector: [
-            {label: '学生', value: 'student'},
-            {label: '家长', value: 'parents'},
-            {label: '老师', value: 'teacher'},
-            {label: '机构', value: 'manager'},
+            {title: '家长', user_type: 3},
+            {title: '学生', user_type: 2},
+            {title: '老师', user_type: 1},
+            {title: '机构', user_type: 0},
         ],
-        selectorChecked: {label: '学生', value: 'student'},
+        selectorChecked: {title: '学生', user_type: 2},
         region: {
-            value: ["北京市", "北京市", "东城区"],
+            user_type: ["北京市", "北京市", "东城区"],
             code: ["110000", "110100", "110101"],
             postcode: ''
         },
-        sAccount: '',
-        sPwd: '',
-        pAccount: '',
-        pPwd: '',
-        tAccount: '',
-        tPwd: '',
-    }
-
-    componentWillReceiveProps(nextProps) {
-        // console.log(this.props, nextProps)
-    }
-
-    componentWillUnmount() {
-    }
-
-    componentDidShow() {
-    }
-
-    componentDidHide() {
+        user_id: '',
+        user_password: '',
     }
 
     render() {
-        const {selector, selectorChecked, region} = this.state;
+        const {showToast, selector, selectorChecked, region} = this.state;
 
         return (
             <View className='index'>
                 <View>
-                    <Picker mode='selector' range-key='label' range={selector} onChange={this.onRoleChange}>
+                    <Picker mode='selector' range-key='title' range={selector} onChange={this.onRoleChange}>
                         <View className='picker'>
                             <Text className='label'>选择登陆身份：</Text>
-                            <AtTag type='primary'>{selectorChecked.label}</AtTag>
+                            <AtTag type='primary'>{selectorChecked.title}</AtTag>
                         </View>
                     </Picker>
                 </View>
@@ -83,108 +64,55 @@ class Index extends Component {
                 <AtForm
                     onSubmit={this.onSubmit}
                 >
-                    {
-                        selectorChecked.value === 'student' &&
-                        <View>
+                    <View>
+                        {
+                            selectorChecked.user_type === 2 &&
                             <Picker
                                 mode="region"
-                                value={region.code}
+                                user_type={region.code}
                                 onChange={this.onRegionChange}
                             >
                                 <View className='picker'>
                                     <Text className='label'>选择区域：</Text>
-                                    <Text className='form-value'>
-                                        {region.value[0]} {region.value[1]} {region.value[2]}
+                                    <Text className='form-user_type'>
+                                        {region.user_type[0]} {region.user_type[1]} {region.user_type[2]}
                                     </Text>
                                 </View>
                             </Picker>
-
-                            <View>
-                                <AtInput
-                                    title='学号'
-                                    placeholder='输入学号'
-                                    onChange={this.onStudentAccountChange}
-                                />
-                            </View>
-                            <View>
-                                <AtInput
-                                    title='密码'
-                                    placeholder='密码'
-                                    type='password'
-                                    onChange={this.onStudentPwdChange}
-                                />
-                            </View>
-
-                            <AtButton
-                                loading={false}
-                                type='primary'
-                                formType='submit'
-                            >登陆</AtButton>
-                        </View>
-                    }
-                    {
-                        selectorChecked.value === 'parents' &&
+                        }
                         <View>
-                            <View>
-                                <AtInput
-                                    title='学号'
-                                    placeholder='输入学号'
-                                    onChange={this.onParentAccountChange}
-                                />
-                            </View>
-                            <View>
-                                <AtInput
-                                    title='密码'
-                                    placeholder='密码'
-                                    type='password'
-                                    onChange={this.onParentPwdChange}
-                                />
-                            </View>
-
-                            <AtButton
-                                loading={false}
-                                type='primary'
-                                formType='submit'
-                            >登陆</AtButton>
+                            <AtInput
+                                title='账号'
+                                placeholder='输入账号'
+                                onChange={this.onAccountChange}
+                            />
                         </View>
-                    }
-                    {
-                        selectorChecked.value === 'teacher' &&
                         <View>
-                            <View>
-                                <AtInput
-                                    title='账号'
-                                    placeholder='输入账号'
-                                    onChange={this.onTeacherAccountChange}
-                                />
-                            </View>
-                            <View>
-                                <AtInput
-                                    title='密码'
-                                    placeholder='密码'
-                                    type='password'
-                                    onChange={this.onTeacherPwdChange}
-                                />
-                            </View>
-
-                            <AtButton
-                                loading={false}
-                                type='primary'
-                                formType='submit'
-                            >登陆</AtButton>
+                            <AtInput
+                                title='密码'
+                                placeholder='密码'
+                                type='password'
+                                onChange={this.onPwdChange}
+                            />
                         </View>
-                    }
-                    {
-                        selectorChecked.value === 'manager' &&
-                        <Text>机构</Text>
-                    }
+
+                        <AtButton
+                            loading={false}
+                            type='primary'
+                            formType='submit'
+                        >登陆</AtButton>
+                    </View>
                 </AtForm>
 
-                {/*<Button className='add_btn' onClick={this.props.add}>+</Button>
-                <Button className='dec_btn' onClick={this.props.dec}>-</Button>
-                <Button className='dec_btn' onClick={this.props.asyncAdd}>async</Button>
-                <View><Text>{this.props.counter.num}</Text></View>
-                <View><Text>Hello, World</Text></View>*/}
+                {
+                    showToast &&
+                    <AtToast
+                        isOpened
+                        status="error"
+                        text="{text}"
+                        icon="{icon}"
+                    />
+                }
             </View>
         )
     }
@@ -196,29 +124,44 @@ class Index extends Component {
     }
 
     onRegionChange = (e) => {
-        const  {value, code, postcode} = e.detail;
+        const {user_type, code, postcode} = e.detail;
         this.setState({region: e.detail})
     }
 
-    onStudentAccountChange = e => this.setState({sAccount: e})
-    onStudentPwdChange = e => this.setState({sPwd: e})
-    onParentAccountChange = e => this.setState({pAccount: e})
-    onParentPwdChange = e => this.setState({pPwd: e})
-    onTeacherAccountChange = e => this.setState({tAccount: e})
-    onTeacherPwdChange = e => this.setState({tPwd: e})
-
+    onAccountChange = e => this.setState({user_id: e})
+    onPwdChange = e => this.setState({user_password: e})
 
     onSubmit = e => {
         const {
             selectorChecked,
-            sAccount,
-            sPwd,
-            pAccount,
-            pPwd,
-            tAccount,
-            tPwd,
+            user_id,
+            user_password,
+            region: {user_type},
         } = this.state;
-        // console.log(selectorChecked, sAccount, sPwd);
+
+        const data = {
+            user_id,
+            user_password,
+            user_type: selectorChecked.user_type,
+            province: user_type[0],
+            city: user_type[1],
+            region: user_type[2]
+        };
+
+        wx.request({
+            url: `${url}${api.LOGIN}`,
+            data: JSON.stringify({data}),
+            method: 'POST',
+            header: {
+                'content-type': 'application/json'
+            },
+            success (res) {
+                console.log(res, 'success');
+            },
+            fail (res) {
+                this.setState({info: res.data})
+            }
+        });
     }
 }
 

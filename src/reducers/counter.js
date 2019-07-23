@@ -1,4 +1,9 @@
-import {ADD, MINUS, TOGGLE_CHECKED} from '../constants/counter'
+import {
+    LOGIN,
+    NET_ERROR,
+    GET_STAR_COUNT,
+    TOGGLE_CHECKED,
+} from '../constants/counter'
 
 const INITIAL_STATE = {
     list: [
@@ -6,20 +11,38 @@ const INITIAL_STATE = {
         {student_id: '1', name: '王大锤', star_count: 5, checked: true},
         {student_id: '2', name: '陆小凤', star_count: 15, checked: false},
     ],
+    studentStars: {
+        total_count: 0,
+        exchange_count: 0,
+        reduce_count: 0,
+    }
 }
 
 export default function counter(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case ADD:
+        case LOGIN:
+            const {data: {data}} = action.payload;
+            console.log('----', data);
+
             return {
                 ...state,
-                num: state.num + 1
             }
-        case MINUS:
+        case NET_ERROR:
+            console.log('error', action.payload);
+
             return {
                 ...state,
-                num: state.num - 1
             }
+
+        //  学生部分
+        case GET_STAR_COUNT:
+            console.log('GET_STAR_COUNT: ', action.payload);
+
+            return {
+                ...state,
+            }
+
+        //  老师部分
         case TOGGLE_CHECKED:
             const {index} = action.payload;
             let list = state.list.slice();

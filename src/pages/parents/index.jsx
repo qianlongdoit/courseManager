@@ -3,23 +3,25 @@ import {View, Button, Text, Picker } from '@tarojs/components'
 import { AtForm } from 'taro-ui'
 import {connect} from '@tarojs/redux'
 
-import {add, minus, asyncAdd} from '../../actions/counter'
+// import {add, minus, asyncAdd} from '../../actions/counter'
+import StudentStatus from '../../components/student-stars'
 
 import './index.less'
+import UserInfo from "../student";
 
 
 @connect(({counter}) => ({
     counter
 }), (dispatch) => ({
-    add() {
-        dispatch(add())
-    },
-    dec() {
-        dispatch(minus())
-    },
-    asyncAdd() {
-        dispatch(asyncAdd())
-    }
+    // add() {
+    //     dispatch(add())
+    // },
+    // dec() {
+    //     dispatch(minus())
+    // },
+    // asyncAdd() {
+    //     dispatch(asyncAdd())
+    // }
 }))
 class Student extends Component {
 
@@ -30,27 +32,22 @@ class Student extends Component {
     state = {
     }
 
-    componentWillReceiveProps(nextProps) {
-        console.log(this.props, nextProps)
-    }
-
-    componentWillUnmount() {
-    }
-
     componentDidShow() {
-    }
-
-    componentDidHide() {
+        const {getStarCount} = this.props;
+        getStarCount({});
     }
 
     render() {
-        const {selector} = this.state;
+        const {counter} = this.props;
+        const {studentStars} = counter;
 
         return (
             <View className='index'>
                 <View className='page-section'>
-                    <Text>家长</Text>
-
+                    <StudentStatus
+                        title={'学生信息：'}
+                        studentStars={studentStars}
+                    />
                 </View>
             </View>
         )

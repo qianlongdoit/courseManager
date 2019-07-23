@@ -13,43 +13,26 @@ class UserInfo extends Component {
         navigationBarTitleText: '学生'
     }
 
-    state = {
-        current: 0,
-    }
-
-    componentWillReceiveProps(nextProps) {
-        // console.log(this.props, nextProps)
-    }
-
-    componentWillUnmount() {
-    }
-
-    componentDidShow() {
-    }
-
-    componentDidHide() {
-    }
-
     render() {
-        const {current} = this.state;
+        const {studentStars = {}, title} = this.props;
 
         return (
             <View className='student-info'>
                 <View className='h3'>
-                    <Text>个人信息：</Text>
+                    <Text>{title}</Text>
                 </View>
 
                 <View className='list'>
                     累计星数量：
-                    <Stars count={4}/>
+                    <Stars count={studentStars.total_count}/>
                 </View>
                 <View className='list'>
                     可用于兑换：
-                    <Stars count={4}/>
+                    <Stars count={studentStars.exchange_count}/>
                 </View>
                 <View className='list'>
                     即将减少的：
-                    <Stars count={4}/>
+                    <Stars count={studentStars.reduce_count}/>
                 </View>
             </View>
         )
