@@ -1,6 +1,10 @@
-import { combineReducers } from 'redux'
-import counter from './counter'
+import {combineReducers} from 'redux'
+import user from './user'
+import student from './student'
+import parents from './parents'
 
 export default combineReducers({
-  counter
+    user,
+    student,
+    parents,
 })

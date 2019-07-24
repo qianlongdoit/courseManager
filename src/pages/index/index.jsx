@@ -6,20 +6,22 @@ import {
     AtInput,
     AtButton,
     AtTag,
-    AtToast,
 } from 'taro-ui'
-import {asyncLogin, login, netError} from '../../actions/counter'
+import {asyncLogin, login} from '../../actions/user'
 
 import './index.less'
 import {url} from "../../uitls/config";
 import api from "../../uitls/api";
 
 
-@connect(({counter}) => ({
-    counter
+@connect(({user}) => ({
+    user
 }), (dispatch) => ({
     asyncLogin(data) {
         dispatch(asyncLogin(data))
+    },
+    login(data) {
+        dispatch(login(data))
     }
 }))
 class Index extends Component {
@@ -32,12 +34,12 @@ class Index extends Component {
         showToast: false,
         info: {},
         selector: [
-            {title: '家长', user_type: 3},
-            {title: '学生', user_type: 2},
+            {title: '学生', user_type: 3},
+            {title: '家长', user_type: 2},
             {title: '老师', user_type: 1},
             {title: '机构', user_type: 0},
         ],
-        selectorChecked: {title: '学生', user_type: 2},
+        selectorChecked: {title: '学生', user_type: 3},
         region: {
             user_type: ["北京市", "北京市", "东城区"],
             code: ["110000", "110100", "110101"],
@@ -62,11 +64,11 @@ class Index extends Component {
                 </View>
 
                 <AtForm
-                    onSubmit={this.onSubmit}
+                    onSubmit={this.onSubmit.bind(this)}
                 >
                     <View>
                         {
-                            selectorChecked.user_type === 2 &&
+                            selectorChecked.user_type === 3 &&
                             <Picker
                                 mode="region"
                                 user_type={region.code}
@@ -103,16 +105,6 @@ class Index extends Component {
                         >登陆</AtButton>
                     </View>
                 </AtForm>
-
-                {
-                    showToast &&
-                    <AtToast
-                        isOpened
-                        status="error"
-                        text="{text}"
-                        icon="{icon}"
-                    />
-                }
             </View>
         )
     }
@@ -131,7 +123,7 @@ class Index extends Component {
     onAccountChange = e => this.setState({user_id: e})
     onPwdChange = e => this.setState({user_password: e})
 
-    onSubmit = e => {
+    async onSubmit() {
         const {
             selectorChecked,
             user_id,
@@ -139,29 +131,38 @@ class Index extends Component {
             region: {user_type},
         } = this.state;
 
-        const data = {
+        let data = {
             user_id,
             user_password,
             user_type: selectorChecked.user_type,
-            province: user_type[0],
-            city: user_type[1],
-            region: user_type[2]
         };
 
-        wx.request({
+        if (selectorChecked.user_type === 3) {
+            data = Object.assign({
+                province: user_type[0],
+                city: user_type[1],
+                region: user_type[2]
+            }, data);
+        }
+        let res = await Taro.request({
             url: `${url}${api.LOGIN}`,
             data: JSON.stringify({data}),
             method: 'POST',
             header: {
                 'content-type': 'application/json'
             },
-            success (res) {
-                console.log(res, 'success');
-            },
-            fail (res) {
-                this.setState({info: res.data})
-            }
         });
+        const {code, data: response, msg} = res.data;
+        if (code !== 200) {
+            Taro.showToast({
+                title: msg,
+                icon: 'none',
+            });
+        } else {
+            Taro.navigateTo({
+                url: '/pages/student/index'
+            });
+        }
     }
 }
 

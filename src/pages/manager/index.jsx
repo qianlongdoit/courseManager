@@ -3,7 +3,7 @@ import {View, Button, Text, Picker } from '@tarojs/components'
 import { AtForm } from 'taro-ui'
 import {connect} from '@tarojs/redux'
 
-import {add, minus, asyncAdd} from '../../actions/counter'
+import {add, minus, asyncAdd} from '../../actions/student'
 
 import './index.less'
 

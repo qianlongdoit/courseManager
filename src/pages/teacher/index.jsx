@@ -10,7 +10,7 @@ import {
 } from 'taro-ui'
 import {connect} from '@tarojs/redux'
 
-import {toggleChecked} from '../../actions/counter'
+import {toggleChecked} from '../../actions/student'
 
 import TeacherRule from '../../components/teacher-rules'
 import TeacherRulePublish from '../../components/teacher-rules-publish'
@@ -25,8 +25,8 @@ const tabList = [
 ];
 
 
-@connect(({counter}) => ({
-    counter
+@connect(({student}) => ({
+    student
 }), (dispatch) => ({
     toggleChecked(key) {
         dispatch(toggleChecked(key))

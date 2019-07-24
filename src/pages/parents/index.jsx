@@ -1,17 +1,16 @@
 import Taro, {Component} from '@tarojs/taro'
-import {View, Button, Text, Picker } from '@tarojs/components'
+import {View, Text } from '@tarojs/components'
 import { AtForm } from 'taro-ui'
 import {connect} from '@tarojs/redux'
 
 // import {add, minus, asyncAdd} from '../../actions/counter'
-import StudentStatus from '../../components/student-stars'
 
 import './index.less'
-import UserInfo from "../student";
+import Stars from '../../components/common-star'
 
 
-@connect(({counter}) => ({
-    counter
+@connect(({parents}) => ({
+    parents
 }), (dispatch) => ({
     // add() {
     //     dispatch(add())
@@ -33,30 +32,28 @@ class Student extends Component {
     }
 
     componentDidShow() {
-        const {getStarCount} = this.props;
-        getStarCount({});
+        // const {getStarCount} = this.props;
+        // getStarCount({});
     }
 
     render() {
-        const {counter} = this.props;
-        const {studentStars} = counter;
+        const {parents = {}} = this.props;
+        const {starCount} = parents;
 
         return (
             <View className='index'>
-                <View className='page-section'>
-                    <StudentStatus
-                        title={'学生信息：'}
-                        studentStars={studentStars}
-                    />
+                <View>
+                    <View className='h3'>
+                        <Text>学生信息：</Text>
+                    </View>
+
+                    <View className='list'>
+                        星星数量：
+                        <Stars count={starCount}/>
+                    </View>
                 </View>
             </View>
         )
-    }
-
-    onChange = e => {
-        this.setState({
-            selectorChecked: this.state.selector[e.detail.value]
-        })
     }
 }
 

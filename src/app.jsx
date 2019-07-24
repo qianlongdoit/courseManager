@@ -21,10 +21,10 @@ class App extends Component {
 
     config = {
         pages: [
-            'pages/parents/index',
-            'pages/teacher/index',
-            'pages/index/index',
             'pages/student/index',
+            'pages/index/index',
+            'pages/teacher/index',
+            'pages/parents/index',
             'pages/manager/index',
         ],
         window: {

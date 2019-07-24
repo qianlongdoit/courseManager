@@ -14,33 +14,33 @@ class DailyTask extends Component {
     }
 
     state = {
-        task: [
-            {id: 1, title: '任务标题1', describe: '描述信息', deadline: '2019-07-12 20:00:00', reward: '这里是奖励'},
-            {id: 2, title: '任务标题2', describe: '描述信息2', deadline: '', reward: ''},
-        ],
+        // task: [
+        //     {id: 1, title: '任务标题1', describe: '描述信息', deadline: '2019-07-12 20:00:00', reward: '这里是奖励'},
+        //     {id: 2, title: '任务标题2', describe: '描述信息2', deadline: '', reward: ''},
+        // ],
     }
 
-    componentWillReceiveProps(nextProps) {
-        // console.log(this.props, nextProps)
-    }
-
-    componentWillUnmount() {
-    }
-
-    componentDidShow() {
-    }
-
-    componentDidHide() {
-    }
+    // componentWillReceiveProps(nextProps) {
+    //     console.log(this.props, nextProps)
+    // }
+    //
+    // componentWillUnmount() {
+    // }
+    //
+    // componentDidShow() {
+    // }
+    //
+    // componentDidHide() {
+    // }
 
     render() {
-        const {task} = this.state;
+        const {task} = this.props;
 
         return (
             <View className='task-list'>
                 <AtList>
                     {
-                        task.map((t, index) => {
+                        (task || []).map((t, index) => {
                             const hasComplete = !!t.deadline;
 
                             return <AtListItem
@@ -64,7 +64,8 @@ class DailyTask extends Component {
     }
 
     handleAcceptTask = (value, e) => {
-        console.log(e, value);
+        console.log(value);
+        this.props.acceptTask()(value.id)
     }
 }
 
