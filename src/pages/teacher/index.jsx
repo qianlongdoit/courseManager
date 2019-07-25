@@ -93,7 +93,7 @@ class Student extends Component {
                 <AtModal
                     className='my-modal'
                     isOpened={showModal}
-                    onClose={this.handleClose}
+                    onClose={this.toggle}
                 >
                     <AtModalHeader>选择评定等级</AtModalHeader>
                     <AtModalContent>
@@ -112,7 +112,7 @@ class Student extends Component {
                     </AtModalContent>
                     <AtModalAction>
                         <Button
-                            onClick={this.handleCancel}
+                            onClick={this.toggle}
                         >取消</Button>
                         <Button
                             onClick={this.handleConfirm}
@@ -129,13 +129,7 @@ class Student extends Component {
         show = typeof show === 'boolean' ? show : !this.state.showModal;
         this.setState({showModal: show});
     }
-    handleCancel = () => {
-        this.toggle()
-    }
     handleConfirm = () => {
-        this.toggle();
-    }
-    handleClose = () => {
         this.toggle();
     }
     handleChangeStars = (e) => {
