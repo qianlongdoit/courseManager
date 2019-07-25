@@ -38,19 +38,19 @@ const tabList = [
         dispatch(asyncGetStarCount(data))
     },
     asyncGetTaskList(data) {
-        dispatch(asyncGetTaskList(data))
+        return dispatch(asyncGetTaskList(data))
     },
     asyncAcceptTask(data) {
-        dispatch(asyncAcceptTask(data))
+        return dispatch(asyncAcceptTask(data))
     },
     asyncGetRewardList(data) {
-        dispatch(asyncGetRewardList(data))
+        return dispatch(asyncGetRewardList(data))
     },
     asyncExchangeReward(data) {
-        dispatch(asyncExchangeReward(data))
+        return dispatch(asyncExchangeReward(data))
     },
     selectReward(data) {
-        dispatch(selectReward(data))
+        return dispatch(selectReward(data))
     },
 }))
 class Student extends Component {
@@ -64,18 +64,8 @@ class Student extends Component {
     }
 
     componentDidShow = () => {
-        const {
-            user: {info},
-            asyncGetTaskList,
-            asyncGetRewardList,
-        } = this.props;
-        const data = {
-            token: info.token,
-            student_id: info.user_id,
-            user_type: info.user_type,
-        };
         this.getStarCount();
-        asyncGetTaskList(data);
+        this.getTaskList();
         // asyncGetRewardList(data);
     }
 
@@ -101,6 +91,7 @@ class Student extends Component {
                         <DailyTask
                             task={taskList}
                             acceptTask={this.acceptTask}
+                            getTaskList={this.getTaskList}
                         />
                     </AtTabsPane>
                     <AtTabsPane current={current} index={2}>
@@ -114,7 +105,7 @@ class Student extends Component {
                 <AtModal
                     className='my-modal'
                     isOpened={showModal}
-                    onClose={this.handleClose}
+                    onClose={this.toggle}
                 >
                     <AtModalHeader>标题</AtModalHeader>
                     <AtModalContent>
@@ -128,7 +119,7 @@ class Student extends Component {
                     </AtModalContent>
                     <AtModalAction>
                         <Button
-                            onClick={this.handleCancel}
+                            onClick={this.toggle}
                         >取消</Button>
                         <Button
                             onClick={this.handleConfirm}
@@ -142,6 +133,17 @@ class Student extends Component {
     handleChangeTab = value => this.setState({current: value})
 
     getStarCount = () => {
+        const {user: {info}} = this.props;
+        const data = {
+            token: info.token,
+            student_id: info.user_id,
+            user_type: info.user_type,
+        };
+
+        this.props.getStarCount(data);
+    }
+
+    getTaskList = () => {
         const {user: {info}} = this.props;
         const data = {
             token: info.token,
@@ -164,7 +166,7 @@ class Student extends Component {
     }
 
     exchangeReward = () => {
-        const {user: {info}, asyncExchangeReward, selectItem = {}} = this.props;
+        const {user: {info}, selectItem = {}} = this.props;
         const data = {
             token: info.token,
             student_id: info.user_id,
@@ -172,7 +174,7 @@ class Student extends Component {
             prize_id: selectItem.id,
         };
 
-        asyncExchangeReward(data)
+        this.props.asyncExchangeReward(data)
             .then(res => {
                 const {code, data: response, msg} = res;
                 if (code !== 200) {
@@ -200,12 +202,6 @@ class Student extends Component {
         this.toggle();
     }
 
-    handleClose = e => {
-        this.toggle();
-    }
-    handleCancel = e => {
-        this.toggle();
-    }
     handleConfirm = e => {
         this.exchangeReward();
         this.toggle();

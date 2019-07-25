@@ -19,7 +19,6 @@ export default function user(state = INITIAL_STATE, action) {
     switch (action.type) {
         case LOGIN: {
             const {data: {data}, query} = action.payload;
-            console.log(data, query);
 
             return {
                 ...state,

@@ -47,7 +47,7 @@ class DailyTask extends Component {
                                 arrow='right'
                                 title={`${t.id}. ${t.title}`}
                                 note={t.describe}
-                                extraText={t.reward}
+                                extraText={`奖励 ${t.reward} 星`}
                                 iconInfo={
                                     hasComplete
                                      ? {size: 25, color: '#3ca440', value: 'check'}
@@ -63,8 +63,22 @@ class DailyTask extends Component {
     }
 
     handleAcceptTask = (value, e) => {
-        console.log(value);
         this.props.acceptTask()(value.id)
+            .then(res => {
+                const {code, data: response, msg} = res;
+                if (code !== 200) {
+                    Taro.showToast({
+                        title: msg,
+                        icon: 'none',
+                    });
+                } else {
+                    Taro.showToast({
+                        title: msg,
+                        icon: 'success',
+                    });
+                    this.props.getTaskList()
+                }
+            })
     }
 }
 
