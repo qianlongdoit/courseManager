@@ -59,24 +59,24 @@ class Student extends Component {
     }
 
     state = {
-        current: 2,
+        current: 0,
         showModal: false,
     }
 
     componentDidShow = () => {
         const {
             user: {info},
-            getStarCount,
             asyncGetTaskList,
             asyncGetRewardList,
         } = this.props;
         const data = {
             token: info.token,
-            student_id: info.user_id
+            student_id: info.user_id,
+            user_type: info.user_type,
         };
-        getStarCount(data);
+        this.getStarCount();
         asyncGetTaskList(data);
-        // asyncGetRewardList({token: info.token});
+        // asyncGetRewardList(data);
     }
 
     render() {
@@ -86,7 +86,6 @@ class Student extends Component {
             studentStars,
             taskList = [],
             selectItem = {},
-            rewardList = [],
         } = student;
 
         return (
@@ -107,7 +106,6 @@ class Student extends Component {
                     <AtTabsPane current={current} index={2}>
                         <RewardList
                             {...student}
-                            exchangeReward={this.exchangeReward}
                             handleRewardClick={this.handleRewardClick}
                         />
                     </AtTabsPane>
@@ -143,22 +141,53 @@ class Student extends Component {
 
     handleChangeTab = value => this.setState({current: value})
 
+    getStarCount = () => {
+        const {user: {info}} = this.props;
+        const data = {
+            token: info.token,
+            student_id: info.user_id,
+            user_type: info.user_type,
+        };
+
+        this.props.asyncGetTaskList(data);
+    }
+
     acceptTask = () => {
         const {user: {info}, asyncAcceptTask} = this.props;
         const data = {
             token: info.token,
-            student_id: info.user_id
+            student_id: info.user_id,
+            user_type: info.user_type,
         };
 
         return (task_id) => asyncAcceptTask({...data, task_id});
     }
 
     exchangeReward = () => {
-        const {user: {info}, asyncExchangeReward} = this.props;
+        const {user: {info}, asyncExchangeReward, selectItem = {}} = this.props;
         const data = {
             token: info.token,
-            student_id: info.user_id
+            student_id: info.user_id,
+            user_type: info.user_type,
+            prize_id: selectItem.id,
         };
+
+        asyncExchangeReward(data)
+            .then(res => {
+                const {code, data: response, msg} = res;
+                if (code !== 200) {
+                    Taro.showToast({
+                        title: msg,
+                        icon: 'none',
+                    });
+                } else {
+                    Taro.showToast({
+                        title: msg,
+                        icon: 'success',
+                    });
+                    this.getStarCount();
+                }
+            })
     }
 
     toggle = show => {
@@ -167,7 +196,6 @@ class Student extends Component {
     }
 
     handleRewardClick = (value, e) => {
-        console.log(value, '0------');
         this.props.selectReward(value);
         this.toggle();
     }
@@ -179,6 +207,7 @@ class Student extends Component {
         this.toggle();
     }
     handleConfirm = e => {
+        this.exchangeReward();
         this.toggle();
     }
 }

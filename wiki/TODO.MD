@@ -6,8 +6,8 @@
 
 机构 001 test   
 老师 0010001 test
-学生 001000100001 test1
-家长 001000100001 test2
+学生 001000100001 test2
+家长 001000100001 test1
 
 
 机构	    GdcLIQWjelTwEJCNWbWlkIkYsBZyBXXA

@@ -35,7 +35,6 @@ class DailyTask extends Component {
 
     render() {
         const {task} = this.props;
-
         return (
             <View className='task-list'>
                 <AtList>

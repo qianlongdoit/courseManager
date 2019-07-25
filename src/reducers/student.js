@@ -61,7 +61,6 @@ export default function student(state = INITIAL_STATE, action) {
         }
         case GET_TASK_LIST: {
             const {data} = action.payload;
-            console.log('GET_TASK_LIST: ', data);
 
             return {
                 ...state,

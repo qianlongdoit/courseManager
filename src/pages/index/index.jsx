@@ -1,5 +1,5 @@
 import Taro, {Component} from '@tarojs/taro'
-import {View, Button, Text, Picker} from '@tarojs/components'
+import {View, Text, Picker} from '@tarojs/components'
 import {connect} from '@tarojs/redux'
 import {
     AtForm,
@@ -10,15 +10,20 @@ import {
 import {asyncLogin, login} from '../../actions/user'
 
 import './index.less'
-import {url} from "../../uitls/config";
-import api from "../../uitls/api";
+
+const LOGIN_URL = {
+    '3': '/pages/student/index',
+    '2': '/pages/parents/index',
+    '1': '/pages/teacher/index',
+    '0': '/pages/manager/index',
+}
 
 
 @connect(({user}) => ({
     user
 }), (dispatch) => ({
     asyncLogin(data) {
-        dispatch(asyncLogin(data))
+        return dispatch(asyncLogin(data))
     },
     login(data) {
         dispatch(login(data))
@@ -31,7 +36,6 @@ class Index extends Component {
     }
 
     state = {
-        showToast: false,
         info: {},
         selector: [
             {title: '学生', user_type: 3},
@@ -45,12 +49,22 @@ class Index extends Component {
             code: ["110000", "110100", "110101"],
             postcode: ''
         },
-        user_id: '',
-        user_password: '',
+        // user_id: '',
+        // user_password: '',
+        user_id: '001000100001',
+        user_password: 'test2',
+        // user_id: '001000100001',
+        // user_password: 'test1',
     }
 
     render() {
-        const {showToast, selector, selectorChecked, region} = this.state;
+        const {
+            selector,
+            selectorChecked,
+            region,
+            user_id,
+            user_password,
+        } = this.state;
 
         return (
             <View className='index'>
@@ -86,6 +100,7 @@ class Index extends Component {
                             <AtInput
                                 title='账号'
                                 placeholder='输入账号'
+                                value={user_id}
                                 onChange={this.onAccountChange}
                             />
                         </View>
@@ -94,6 +109,7 @@ class Index extends Component {
                                 title='密码'
                                 placeholder='密码'
                                 type='password'
+                                value={user_password}
                                 onChange={this.onPwdChange}
                             />
                         </View>
@@ -116,14 +132,13 @@ class Index extends Component {
     }
 
     onRegionChange = (e) => {
-        const {user_type, code, postcode} = e.detail;
         this.setState({region: e.detail})
     }
 
     onAccountChange = e => this.setState({user_id: e})
     onPwdChange = e => this.setState({user_password: e})
 
-    async onSubmit() {
+    onSubmit = () => {
         const {
             selectorChecked,
             user_id,
@@ -144,25 +159,26 @@ class Index extends Component {
                 region: user_type[2]
             }, data);
         }
-        let res = await Taro.request({
-            url: `${url}${api.LOGIN}`,
-            data: JSON.stringify({data}),
-            method: 'POST',
-            header: {
-                'content-type': 'application/json'
-            },
-        });
-        const {code, data: response, msg} = res.data;
-        if (code !== 200) {
-            Taro.showToast({
-                title: msg,
-                icon: 'none',
-            });
-        } else {
-            Taro.navigateTo({
-                url: '/pages/student/index'
-            });
-        }
+
+        this.props.asyncLogin(data)
+            .then(res => {
+                const {code, data: response, msg} = res;
+                if (code !== 200) {
+                    Taro.showToast({
+                        title: msg,
+                        icon: 'none',
+                    });
+                } else {
+                    Taro.navigateTo({
+                        url: LOGIN_URL[selectorChecked.user_type]
+                    });
+                }
+            })
+            .catch(e => {
+                console.error(e);
+            })
+
+
     }
 }
 

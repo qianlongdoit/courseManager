@@ -73,126 +73,117 @@ export const selectReward = (res) => {
 
 export const asyncGetStarCount = (data) => {
     return dispatch => {
-        Taro.request({
-            url: `${url}${api.GET_STAR_COUNT}`,
-            data: JSON.stringify({data}),
-            method: 'POST',
-            header: {
-                'content-type': 'application/json'
-            },
+        return new Promise((resolve, reject) => {
+            Taro.request({
+                url: `${url}${api.GET_STAR_COUNT}`,
+                data: JSON.stringify({data}),
+                method: 'POST',
+                header: {
+                    'content-type': 'application/json'
+                },
+            })
+                .then(res => {
+                    const {data: response = {}} = res;
+                    dispatch(getStarCount(response));
+                    resolve(response)
+                })
+                .catch(e => {
+                    dispatch(netError(e));
+                    reject(e)
+                })
         })
-            .then(res =>{
-                const {data: response = {}} = res;
-                const {code, data, msg} = response;
-
-                if (code !== 0) {
-                    dispatch(netError(response));
-                } else {
-                    dispatch(getStarCount(res));
-                }
-            })
-            .catch(e => {
-                dispatch(netError(e))
-            })
     }
 }
 export const asyncGetTaskList = (data) => {
     return dispatch => {
-        Taro.request({
-            url: `${url}${api.GET_TASK}`,
-            data: JSON.stringify({data}),
-            method: 'POST',
-            header: {
-                'content-type': 'application/json'
-            },
+        return new Promise((resolve, reject) => {
+            return Taro.request({
+                url: `${url}${api.GET_TASK}`,
+                data: JSON.stringify({data}),
+                method: 'POST',
+                header: {
+                    'content-type': 'application/json'
+                },
+            })
+                .then(res =>{
+                    const {data: response = {}} = res;
+                    dispatch(getTaskList(response));
+                    resolve(response)
+                })
+                .catch(e => {
+                    dispatch(netError(e));
+                    reject(e)
+                })
         })
-            .then(res =>{
-                const {data: response = {}} = res;
-                const {code, data, msg} = response;
-
-                if (code !== 0) {
-                    dispatch(netError(response));
-                } else {
-                    dispatch(getTaskList(res));
-                }
-            })
-            .catch(e => {
-                dispatch(netError(e))
-            })
     }
 }
 export const asyncAcceptTask = (data) => {
     return dispatch => {
-        Taro.request({
-            url: `${url}${api.ACCEPT_TASK}`,
-            data: JSON.stringify({data}),
-            method: 'POST',
-            header: {
-                'content-type': 'application/json'
-            },
+        return new Promise((resolve, reject) => {
+            return Taro.request({
+                url: `${url}${api.ACCEPT_TASK}`,
+                data: JSON.stringify({data}),
+                method: 'POST',
+                header: {
+                    'content-type': 'application/json'
+                },
+            })
+                .then(res => {
+                    const {data: response = {}} = res;
+                    dispatch(acceptTask(response));
+                    resolve(response)
+                })
+                .catch(e => {
+                    dispatch(netError(e));
+                    reject(e)
+                })
         })
-            .then(res =>{
-                const {data: response = {}} = res;
-                const {code, data, msg} = response;
-
-                if (code !== 0) {
-                    dispatch(netError(response));
-                } else {
-                    dispatch(acceptTask(res));
-                }
-            })
-            .catch(e => {
-                dispatch(netError(e))
-            })
     }
 }
 export const asyncGetRewardList = (data) => {
     return dispatch => {
-        Taro.request({
-            url: `${url}${api.GET_TASK_REWARD}`,
-            data: JSON.stringify({data}),
-            method: 'POST',
-            header: {
-                'content-type': 'application/json'
-            },
-        })
-            .then(res =>{
-                const {data: response = {}} = res;
-                const {code, data, msg} = response;
+        return new Promise((resolve, reject) => {
+            Taro.request({
+                url: `${url}${api.GET_TASK_REWARD}`,
+                data: JSON.stringify({data}),
+                method: 'POST',
+                header: {
+                    'content-type': 'application/json'
+                },
+            })
+                .then(res => {
+                    const {data: response = {}} = res;
 
-                if (code !== 0) {
-                    dispatch(netError(response));
-                } else {
-                    dispatch(getRewardList(res));
-                }
-            })
-            .catch(e => {
-                dispatch(netError(e))
-            })
+                    dispatch(getRewardList(response));
+                    resolve(response)
+                })
+                .catch(e => {
+                    dispatch(netError(e));
+                    reject(e)
+                })
+        })
     }
 }
 export const asyncExchangeReward = (data) => {
     return dispatch => {
-        Taro.request({
-            url: `${url}${api.GET_TASK_REWARD}`,
-            data: JSON.stringify({data}),
-            method: 'POST',
-            header: {
-                'content-type': 'application/json'
-            },
+        return new Promise((resolve, reject) => {
+            Taro.request({
+                url: `${url}${api.EXCHANGE_REWARD}`,
+                data: JSON.stringify({data}),
+                method: 'POST',
+                header: {
+                    'content-type': 'application/json'
+                },
+            })
+                .then(res => {
+                    const {data: response = {}} = res;
+                    dispatch(exchangeReward(response));
+                    resolve(response)
+                })
+                .catch(e => {
+                    dispatch(netError(e))
+                    reject(e)
+                })
         })
-            .then(res =>{
-                const {data: response = {}} = res;
-                const {code, data, msg} = response;
-
-                if (code !== 0) {
-                    dispatch(netError(response));
-                } else {
-                    dispatch(exchangeReward(res));
-                }
-            })
-            .catch(e => {
-                dispatch(netError(e))
-            })
     }
 }

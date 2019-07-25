@@ -14,38 +14,38 @@ export const netError = res => {
         }
     }
 }
-export const login = res => {
+export const login = (res, query) => {
     return {
         type: LOGIN,
         payload: {
-            data: res
+            data: res,
+            query
         }
     }
 }
 
 export const asyncLogin = (data) => {
     return dispatch => {
-        Taro.request({
-            url: `${url}${api.LOGIN}`,
-            data: JSON.stringify({data}),
-            method: 'POST',
-            header: {
-                'content-type': 'application/json'
-            }
-        })
-            .then(res => {
-                const {data: response = {}} = res;
-                const {code, data, msg} = response;
-
-                if (code !== 0) {
-                    dispatch(netError(response));
-                } else {
-                    dispatch(login(response));
+        return new Promise((resolve, reject) => {
+            return Taro.request({
+                url: `${url}${api.LOGIN}`,
+                data: JSON.stringify({data}),
+                method: 'POST',
+                header: {
+                    'content-type': 'application/json'
                 }
             })
-            .catch(e => {
-                dispatch(netError(e))
-            });
+                .then(res => {
+                    const {data: response = {}} = res;
+
+                    dispatch(login(response, data));
+                    resolve(response)
+                })
+                .catch(e => {
+                    dispatch(netError(e));
+                    reject(e)
+                });
+        })
 
 
     }
