@@ -1,5 +1,5 @@
 import Taro, {Component} from '@tarojs/taro'
-import {View, Button, Text, Picker } from '@tarojs/components'
+import {View, Button, Text} from '@tarojs/components'
 import {
     AtModal,
     AtModalAction,
@@ -10,14 +10,21 @@ import {
 } from 'taro-ui'
 import {connect} from '@tarojs/redux'
 
-import {toggleChecked} from '../../actions/student'
+import {
+    selectRule,
+    toggleChecked,
+    asyncGetRules,
+    asyncPublishRule,
+    asyncEditStar,
+    asyncGetStudentStatus,
+} from '../../actions/teacher'
 
 import TeacherRule from '../../components/teacher-rules'
 import TeacherRulePublish from '../../components/teacher-rules-publish'
 import TeacherGradeMark from '../../components/teacher-grade-mark'
 import './index.less'
 
-const tabList = [
+const TABLE_LIST = [
     {title: '查看规则'},
     {title: '任务管理'},
     {title: '学生评分'},
@@ -25,12 +32,28 @@ const tabList = [
 ];
 
 
-@connect(({student}) => ({
-    student
+@connect(({user, teacher}) => ({
+    user,
+    teacher,
 }), (dispatch) => ({
+    selectRule(key) {
+        return dispatch(selectRule(key))
+    },
     toggleChecked(key) {
-        dispatch(toggleChecked(key))
-    }
+        return dispatch(toggleChecked(key))
+    },
+    asyncGetRules(data) {
+        return dispatch(asyncGetRules(data))
+    },
+    asyncPublishRule(data) {
+        return dispatch(asyncPublishRule(data))
+    },
+    asyncEditStar(data) {
+        return dispatch(asyncEditStar(data))
+    },
+    asyncGetStudentStatus(data) {
+        return dispatch(asyncGetStudentStatus(data))
+    },
 }))
 class Student extends Component {
 
@@ -39,55 +62,79 @@ class Student extends Component {
     }
 
     state = {
+        showMoreDetailModal: false,
         showModal: false,
         stars: 0,
         current: 2,
     }
 
-    componentWillReceiveProps(nextProps) {
-        // console.log(this.props, nextProps)
-    }
-
-    componentWillUnmount() {
-    }
-
     componentDidShow() {
-    }
-
-    componentDidHide() {
+        // this.getRules();
     }
 
     render() {
-        const {current, showModal, stars} = this.state;
-        const {counter, toggleChecked} = this.props;
+        const {
+            current,
+            showModal,
+            showMoreDetailModal,
+            stars,
+        } = this.state;
+        const {
+            teacher = {},
+            toggleChecked,
+        } = this.props;
+        const {selectedRule = {}} = teacher;
 
         return (
             <View className='index'>
                 <AtTabs
                     current={current}
-                    tabList={tabList}
+                    tabList={TABLE_LIST}
                     onClick={this.handleChangeTab}
                 >
                     <AtTabsPane current={current} index={0}>
-                        <TeacherRule />
+                        <TeacherRule
+                            rules={teacher.rules}
+                            selectRule={this.handleRuleSelect}
+                        />
                     </AtTabsPane>
+
                     <AtTabsPane current={current} index={1}>
-                        <TeacherRulePublish />
+                        <TeacherRulePublish
+                            publishTask={this.handlePublishTask}
+                        />
                     </AtTabsPane>
+
                     <AtTabsPane
                         current={current}
                         index={2}
                     >
                         <TeacherGradeMark
-                            counter={counter}
+                            counter={teacher}
                             toggleChecked={toggleChecked}
                             toggleModal={this.toggle}
                         />
                     </AtTabsPane>
-                    <AtTabsPane current={current} index={3}>
-                        ddd
-                    </AtTabsPane>
                 </AtTabs>
+
+                {/*规则详情*/}
+                <AtModal
+                    className='my-modal'
+                    isOpened={showMoreDetailModal}
+                    onClose={this.toggleRuleModal}
+                >
+                    <AtModalHeader>规则详情</AtModalHeader>
+                    <AtModalContent>
+                        <View>
+                            {selectedRule.describe}
+                        </View>
+                    </AtModalContent>
+                    <AtModalAction>
+                        <Button
+                            onClick={this.toggleRuleModal}
+                        >确定</Button>
+                    </AtModalAction>
+                </AtModal>
 
 
                 <AtModal
@@ -124,6 +171,36 @@ class Student extends Component {
     }
 
     handleChangeTab = value => this.setState({current: value})
+
+    getRules = () => {
+        const {user: {info}} = this.props;
+        const data = {
+            token: info.token,
+            teacher_id: info.user_id,
+            user_type: info.user_type,
+        };
+        this.props.asyncGetRules(data)
+    }
+
+    toggleRuleModal = show => {
+        show = typeof show === 'boolean' ? show : !this.state.showMoreDetailModal;
+        this.setState({showMoreDetailModal: show});
+    }
+
+    handleRuleSelect = (rule) => {
+        this.props.selectRule(rule);
+        this.toggleRuleModal()
+    }
+
+    handlePublishTask = () => {
+        const {user: {info}} = this.props;
+        const data = {
+            token: info.token,
+            teacher_id: info.user_id,
+            user_type: info.user_type,
+        };
+        return (params) => this.props.asyncPublishRule({...params, ...data});
+    }
 
     toggle = show => {
         show = typeof show === 'boolean' ? show : !this.state.showModal;

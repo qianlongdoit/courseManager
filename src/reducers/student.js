@@ -49,7 +49,6 @@ export default function student(state = INITIAL_STATE, action) {
         }
         case GET_STAR_COUNT: {
             const {data} = action.payload;
-            console.log('GET_STAR_COUNT: ', data);
 
             return {
                 ...state,
@@ -94,7 +93,6 @@ export default function student(state = INITIAL_STATE, action) {
         }
         case SELECT_REWARD: {
             const {data} = action.payload;
-            console.log('SELECT_REWARD: ', data);
 
             return {
                 ...state,

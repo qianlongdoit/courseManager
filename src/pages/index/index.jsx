@@ -43,7 +43,8 @@ class Index extends Component {
             {title: '老师', user_type: 1},
             {title: '机构', user_type: 0},
         ],
-        selectorChecked: {title: '学生', user_type: 3},
+        // selectorChecked: {title: '学生', user_type: 3},
+        selectorChecked: {title: '老师', user_type: 1},
         region: {
             user_type: ["北京市", "北京市", "东城区"],
             code: ["110000", "110100", "110101"],

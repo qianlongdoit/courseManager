@@ -21,30 +21,17 @@ class UserInfo extends Component {
             title: '',
             describe: '',
             reward: 3,
+            deadline: '2019-07-20',
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        // console.log(this.props, nextProps)
-    }
-
-    componentWillUnmount() {
-    }
-
-    componentDidShow() {
-    }
-
-    componentDidHide() {
-    }
-
     render() {
-        const {task: {title, describe, reward}} = this.state;
+        const {task: {title, describe, reward, deadline}} = this.state;
 
         return (
             <View className='task-publish'>
                 <AtForm
                     onSubmit={this.onSubmit}
-                    // onReset={this.onReset}
                 >
                     <View className='task-title'>发布任务</View>
 
@@ -77,6 +64,17 @@ class UserInfo extends Component {
                         />
                     </View>
 
+                    <View className='form-item'>
+                        <Picker
+                            mode='date'
+                            onChange={this.handleChangeDate}
+                        >
+                            <View>
+                                选择截止日期：{deadline}
+                            </View>
+                        </Picker>
+                    </View>
+
                     <View className='btn'>
                         <AtButton
                             formType='submit'
@@ -84,12 +82,6 @@ class UserInfo extends Component {
                             circle={true}
                         >发布</AtButton>
                     </View>
-                    {/*<View className='btn'>
-                        <AtButton
-                            circle={true}
-                            formType='reset'
-                        >重置</AtButton>
-                    </View>*/}
                 </AtForm>
             </View>
         )
@@ -98,10 +90,22 @@ class UserInfo extends Component {
     onSubmit = () => {
         const {task} = this.state;
         console.log(task);
-    }
-
-    onReset = () => {
-
+        this.props.publishTask()(task)
+            .then(res =>{
+                const {code, data: response, msg} = res;
+                if (code !== 200) {
+                    Taro.showToast({
+                        title: msg,
+                        icon: 'none',
+                    });
+                } else {
+                    Taro.showToast({
+                        title: msg,
+                        icon: 'success',
+                    });
+                    this.getStarCount();
+                }
+            })
     }
 
     handleChangeTitle = (e) => {
@@ -115,6 +119,10 @@ class UserInfo extends Component {
     handleChangeReward = (e) => {
         const {task} = this.state;
         this.setState({task: {...task, reward: e}})
+    }
+    handleChangeDate = e => {
+        const {task} = this.state;
+        this.setState({task: {...task, deadline: e}})
     }
 }
 

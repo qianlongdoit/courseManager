@@ -43,7 +43,7 @@ class UserInfo extends Component {
         // const {showModal, stars} = this.state;
         const {counter = {}, toggleChecked, toggleModal} = this.props;
         const {list} = counter;
-
+        console.log(list);
         return (
             <View className='content'>
                 <View className='edit'>
