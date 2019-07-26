@@ -9,6 +9,7 @@ import {connect} from '@tarojs/redux'
 
 import {asyncAddClass} from '../../actions/manager'
 
+import Title from '../../components/common-title'
 import './index.less'
 
 
@@ -28,18 +29,18 @@ class Student extends Component {
     }
 
     state = {
-        begin: undefined,
-        end: undefined,
+        beginDate: "2019-09-01",
+        beginTime: "8:00",
+        endDate: "2019-09-01",
+        endTime: "8:45",
         subject: undefined,
     }
 
     render() {
-        const {begin, end, subject} = this.state;
+        const {beginDate, beginTime, endDate, endTime, subject} = this.state;
         return (
             <View className='index'>
-                <View className='page-section'>
-                    <Text>添加排课</Text>
-                </View>
+                <Title title='添加排课' />
 
                 <AtForm
                     onSubmit={this.onSubmit}
@@ -56,17 +57,27 @@ class Student extends Component {
                     </View>
 
                     <View className='form-item'>
-                        <Picker mode='time' onChange={this.onStartTimeChange}>
+                        <Picker mode='date' onChange={this.onTimeChange.bind(this, 'Date', 'begin')}>
                             <View className='picker'>
-                                开始时间：{begin}
+                                开始日期：{beginDate}
+                            </View>
+                        </Picker>
+                        <Picker mode='time' onChange={this.onTimeChange.bind(this, 'Time', 'begin')}>
+                            <View className='picker'>
+                                开始时间：{beginTime}
                             </View>
                         </Picker>
                     </View>
 
                     <View className='form-item'>
-                        <Picker mode='time' onChange={this.onEndTimeChange}>
+                        <Picker mode='date' onChange={this.onTimeChange.bind(this, 'Date', 'end')}>
                             <View className='picker'>
-                                结束时间：{end}
+                                结束日期：{endDate}
+                            </View>
+                        </Picker>
+                        <Picker mode='time' onChange={this.onTimeChange.bind(this, 'Time', 'end')}>
+                            <View className='picker'>
+                                结束时间：{endTime}
                             </View>
                         </Picker>
                     </View>
@@ -86,21 +97,14 @@ class Student extends Component {
     handleChangeSubject = e => {
         this.setState({subject: e})
     }
-    onStartTimeChange = e => {
-        this.setState({
-            begin: e.detail.value
-        })
-    }
-    onEndTimeChange = e => {
-        this.setState({
-            begin: e.detail.value
-        })
+    onTimeChange = (type, time, e) => {
+        this.setState({[`${time}${type}`]: e.detail.value})
     }
 
     onSubmit = () => {
-        const {start, end, subject} = this.state;
-        if (!subject || !start || !end) {
-            Taro.showToast({
+        const {beginDate, beginTime, endDate, endTime, subject} = this.state;
+        if (!subject || !beginDate || !beginTime || !endDate || !endTime) {
+            return Taro.showToast({
                 title: '请输入完整信息',
                 icon: 'none',
             })
@@ -113,8 +117,8 @@ class Student extends Component {
             agency_id: info.user_id,
             user_type: info.user_type,
             // teacher_id: info.user_type,
-            start,
-            end,
+            start: `${beginDate} ${beginTime}`,
+            end: `${endDate} ${endDate}`,
             subject,
         };
 

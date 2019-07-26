@@ -10,6 +10,7 @@ import {connect} from '@tarojs/redux'
 
 import {asyncAddRule} from '../../actions/manager'
 
+import Title from '../../components/common-title'
 import './index.less'
 
 
@@ -39,9 +40,7 @@ class AddRule extends Component {
 
         return (
             <View className='index'>
-                <View className='page-section'>
-                    <View className='task-title'>发布规则</View>
-                </View>
+                <Title title='发布规则' />
 
                 <AtForm
                     onSubmit={this.onSubmit}
@@ -89,7 +88,7 @@ class AddRule extends Component {
     onSubmit = () => {
         const {title, describe} = this.state;
         if (!title || !describe) {
-            Taro.showToast({
+            return Taro.showToast({
                 title: '请输入完整信息',
                 icon: 'none',
             })

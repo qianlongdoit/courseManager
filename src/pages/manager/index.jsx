@@ -1,14 +1,12 @@
 import Taro, {Component} from '@tarojs/taro'
-import {View, Button, Text} from '@tarojs/components'
+import {View, Text} from '@tarojs/components'
 import {
     AtList,
     AtListItem,
 } from 'taro-ui'
-import {connect} from '@tarojs/redux'
-
-// import {asyncGetStarCount} from '../../actions/manager'
 
 import './index.less'
+import Title from '../../components/common-title'
 
 const AGENCY_ROUTE = [
     {title: '增加服务', url: '/pages/manager-addService/index'},
@@ -18,18 +16,10 @@ const AGENCY_ROUTE = [
 ];
 
 
-@connect(({user, manager}) => ({
-    user,
-    manager,
-}), (dispatch) => ({
-    // asyncGetStarCount() {
-    //     return dispatch(asyncGetStarCount())
-    // },
-}))
 class Student extends Component {
 
     config = {
-        navigationBarTitleText: '机构'
+        navigationBarTitleText: '机构管理'
     }
 
     state = {
@@ -42,13 +32,7 @@ class Student extends Component {
 
         return (
             <View className='index'>
-                <View className='page-section'>
-                    <Text>管理人员</Text>
-                </View>
-
-                <View>
-                    <Text>功能选择：</Text>
-                </View>
+                <Title title='功能选择' />
 
                 <View>
                     <AtList>

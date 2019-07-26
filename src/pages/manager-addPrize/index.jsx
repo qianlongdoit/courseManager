@@ -9,6 +9,7 @@ import {connect} from '@tarojs/redux'
 
 import {asyncAddPrize} from '../../actions/manager'
 
+import Title from '../../components/common-title'
 import './index.less'
 
 
@@ -41,9 +42,7 @@ class AddPrize extends Component {
 
         return (
             <View className='index'>
-                <View className='page-section'>
-                    <View className='task-title'>添加奖品</View>
-                </View>
+                <Title title='添加奖品' />
 
                 <AtForm
                     onSubmit={this.onSubmit}
@@ -108,7 +107,7 @@ class AddPrize extends Component {
     onSubmit = () => {
         const {name, stock, cost} = this.state;
         if (!name || typeof stock === 'undefined' || typeof cost === 'undefined') {
-            Taro.showToast({
+            return Taro.showToast({
                 title: '请输入完整信息',
                 icon: 'none',
             })

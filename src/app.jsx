@@ -26,10 +26,10 @@ class App extends Component {
             'pages/teacher/index',
             'pages/parents/index',
             'pages/manager/index',
-            'pages/manager-addClass/index',
-            'pages/manager-addPrize/index',
-            'pages/manager-addRule/index',
             'pages/manager-addService/index',
+            'pages/manager-addRule/index',
+            'pages/manager-addPrize/index',
+            'pages/manager-addClass/index',
         ],
         window: {
             backgroundTextStyle: 'light',

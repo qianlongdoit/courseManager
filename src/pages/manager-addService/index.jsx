@@ -9,6 +9,7 @@ import {connect} from '@tarojs/redux'
 
 import {asyncAddService} from '../../actions/manager'
 
+import Title from '../../components/common-title'
 import './index.less'
 
 
@@ -36,9 +37,7 @@ class AddService extends Component {
 
         return (
             <View className='index'>
-                <View className='page-section'>
-                    <View className='task-title'>发布服务</View>
-                </View>
+                <Title title='发布服务' />
 
                 <AtForm
                     onSubmit={this.onSubmit}
@@ -72,7 +71,7 @@ class AddService extends Component {
     onSubmit = () => {
         const {service} = this.state;
         if (!service) {
-            Taro.showToast({
+            return Taro.showToast({
                 title: '请输入服务描述',
                 icon: 'none',
             })
