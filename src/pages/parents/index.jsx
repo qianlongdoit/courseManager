@@ -3,24 +3,19 @@ import {View, Text } from '@tarojs/components'
 import { AtForm } from 'taro-ui'
 import {connect} from '@tarojs/redux'
 
-// import {add, minus, asyncAdd} from '../../actions/counter'
+import {asyncGetStarCount} from '../../actions/parents'
 
 import './index.less'
 import Stars from '../../components/common-star'
 
 
-@connect(({parents}) => ({
-    parents
+@connect(({user, parents}) => ({
+    user,
+    parents,
 }), (dispatch) => ({
-    // add() {
-    //     dispatch(add())
-    // },
-    // dec() {
-    //     dispatch(minus())
-    // },
-    // asyncAdd() {
-    //     dispatch(asyncAdd())
-    // }
+    asyncGetStarCount(data) {
+        return  dispatch(asyncGetStarCount(data))
+    },
 }))
 class Student extends Component {
 
@@ -32,8 +27,7 @@ class Student extends Component {
     }
 
     componentDidShow() {
-        // const {getStarCount} = this.props;
-        // getStarCount({});
+        this.getStudentStar();
     }
 
     render() {
@@ -54,6 +48,17 @@ class Student extends Component {
                 </View>
             </View>
         )
+    }
+
+    getStudentStar = () => {
+        const {user: {info}} = this.props;
+        const data = {
+            token: info.token,
+            student_id: info.user_id,
+            user_type: info.user_type,
+        };
+
+        this.props.asyncGetStarCount(data)
     }
 }
 

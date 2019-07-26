@@ -1,12 +1,19 @@
-import {
-    GET_STAR_COUNT,
-} from '../constants/parents'
+import Taro from '@tarojs/taro'
+import * as ACTION from '../constants/parents'
 import {url} from '../uitls/config'
 import api from '../uitls/api.js'
 
-export const netError = res =>{
+export const netError = res => {
     return {
-        type: NET_ERROR,
+        type: ACTION.NET_ERROR,
+        payload: {
+            data: res
+        }
+    }
+}
+export const getStars = res => {
+    return {
+        type: ACTION.GET_STAR_COUNT,
         payload: {
             data: res
         }
@@ -15,30 +22,24 @@ export const netError = res =>{
 
 export const asyncGetStarCount = (data) => {
     return dispatch => {
-        wx.request({
-            url: `${url}${api.GET_STAR_COUNT}`,
-            data: JSON.stringify({data}),
-            method: 'POST',
-            header: {
-                'content-type': 'application/json'
-            },
-            success (res) {
-                dispatch(getStarCount(res));
-            },
-            fail (res) {
-                dispatch(netError(res));
-            }
-        });
-    }
-}
-
-
-
-// 异步的action
-export function asyncAdd() {
-    return dispatch => {
-        setTimeout(() => {
-            dispatch(add())
-        }, 2000)
+        return new Promise((resolve, reject) => {
+            Taro.request({
+                url: `${url}${api.PARENT_GET_STUDENT_STATUS}`,
+                data: JSON.stringify({data}),
+                method: 'POST',
+                header: {
+                    'content-type': 'application/json'
+                }
+            })
+                .then(res => {
+                    const {data: response = {}} = res;
+                    dispatch(getStars(response));
+                    resolve(response)
+                })
+                .catch(e => {
+                    dispatch(netError(e));
+                    reject(e)
+                })
+        })
     }
 }

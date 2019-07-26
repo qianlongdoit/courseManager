@@ -56,7 +56,9 @@ class Index extends Component {
         // user_password: 'test2',
         // user_id: '001000100001',
         // user_password: 'test1',
-        user_id: '0010001',
+        // user_id: '0010001',
+        // user_password: 'test',
+        user_id: '001',
         user_password: 'test',
     }
 

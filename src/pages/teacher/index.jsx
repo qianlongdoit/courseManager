@@ -69,7 +69,8 @@ class Student extends Component {
     }
 
     componentDidShow() {
-        // this.getRules();
+        this.getRules();
+        this.getStudentStatus();
     }
 
     render() {
@@ -180,6 +181,18 @@ class Student extends Component {
             user_type: info.user_type,
         };
         this.props.asyncGetRules(data)
+    }
+
+    getStudentStatus = () => {
+        const {user: {info}} = this.props;
+        // TODO: 获取机构id
+        const data = {
+            token: info.token,
+            // engency_id: info.user_id,
+            user_type: info.user_type,
+        };
+
+        this.props.asyncGetStudentStatus(data);
     }
 
     toggleRuleModal = show => {
