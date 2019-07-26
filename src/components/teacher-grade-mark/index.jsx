@@ -1,13 +1,7 @@
 import Taro, {Component} from '@tarojs/taro'
 import {View, Button, Text, Picker} from '@tarojs/components'
 import {
-    AtList,
     AtButton,
-    AtListItem,
-    AtModal,
-    AtModalHeader,
-    AtModalContent,
-    AtModalAction, AtRate,
 } from 'taro-ui'
 import StudentList from '../../components/common-student-list'
 import './index.less'
@@ -40,10 +34,9 @@ class UserInfo extends Component {
     }
 
     render() {
-        // const {showModal, stars} = this.state;
         const {counter = {}, toggleChecked, toggleModal} = this.props;
-        const {list} = counter;
-        console.log(list);
+        const {list = []} = counter;
+
         return (
             <View className='content'>
                 <View className='edit'>
@@ -68,10 +61,6 @@ class UserInfo extends Component {
                 </View>
             </View>
         )
-    }
-
-    getMoreDetail = (item) => {
-        this.setState({selectItem: item})
     }
 }
 

@@ -21,7 +21,7 @@ class UserInfo extends Component {
             title: '',
             describe: '',
             reward: 3,
-            deadline: '2019-07-20',
+            deadline: '20XX-XX-XX',
         }
     }
 
@@ -70,7 +70,7 @@ class UserInfo extends Component {
                             onChange={this.handleChangeDate}
                         >
                             <View>
-                                选择截止日期：{deadline}
+                                截止日期：{deadline}
                             </View>
                         </Picker>
                     </View>
@@ -122,7 +122,7 @@ class UserInfo extends Component {
     }
     handleChangeDate = e => {
         const {task} = this.state;
-        this.setState({task: {...task, deadline: e}})
+        this.setState({task: {...task, deadline: e.detail.value}})
     }
 }
 

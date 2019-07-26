@@ -21,11 +21,11 @@ class App extends Component {
 
     config = {
         pages: [
-            'pages/teacher/index',
+            'pages/manager/index',
             'pages/index/index',
             'pages/student/index',
+            'pages/teacher/index',
             'pages/parents/index',
-            'pages/manager/index',
         ],
         window: {
             backgroundTextStyle: 'light',

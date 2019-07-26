@@ -136,7 +136,7 @@ class Student extends Component {
                     </AtModalAction>
                 </AtModal>
 
-
+                {/*评级*/}
                 <AtModal
                     className='my-modal'
                     isOpened={showModal}
@@ -152,10 +152,10 @@ class Student extends Component {
                                 onChange={this.handleChangeStars}
                             />
                         </View>
-                        <View className='level'>
+                        {/*<View className='level'>
                             <Text>等级：</Text>
                             {'A'}
-                        </View>
+                        </View>*/}
                     </AtModalContent>
                     <AtModalAction>
                         <Button
@@ -207,7 +207,29 @@ class Student extends Component {
         this.setState({showModal: show});
     }
     handleConfirm = () => {
-        this.toggle();
+        const {star} = this.state;
+        const {teacher = {}, user: {info}} = this.props;
+        const students = (teacher.list || []).filter((l, index) => !!l.checked && index).map(l => l.student_id);
+
+        const data = {
+            count: star,
+            students,
+            user_type: info.user_type,
+            token: info.token,
+        };
+
+        this.props.asyncEditStar(data)
+            .then(res => {
+                const {code, data: response, msg} = res;
+                if (code !== 200) {
+                    Taro.showToast({
+                        title: msg,
+                        icon: 'none',
+                    });
+                } else {
+                    this.toggle();
+                }
+        })
     }
     handleChangeStars = (e) => {
         this.setState({stars: e});
