@@ -22,10 +22,14 @@ class App extends Component {
     config = {
         pages: [
             'pages/index/index',
-            'pages/manager/index',
             'pages/student/index',
             'pages/teacher/index',
             'pages/parents/index',
+            'pages/manager/index',
+            'pages/manager-addClass/index',
+            'pages/manager-addPrize/index',
+            'pages/manager-addRule/index',
+            'pages/manager-addService/index',
         ],
         window: {
             backgroundTextStyle: 'light',

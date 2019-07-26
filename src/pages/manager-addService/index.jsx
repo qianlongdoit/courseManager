@@ -1,12 +1,13 @@
 import Taro, {Component} from '@tarojs/taro'
-import {View, Button, Text} from '@tarojs/components'
+import {View, Text} from '@tarojs/components'
 import {
-    AtList,
-    AtListItem,
+    AtButton,
+    AtForm,
+    AtTextarea,
 } from 'taro-ui'
 import {connect} from '@tarojs/redux'
 
-import {asyncGetStarCount} from '../../actions/manager'
+import {asyncAddService} from '../../actions/manager'
 
 import './index.less'
 
@@ -16,33 +17,94 @@ import './index.less'
     user,
     manager,
 }), (dispatch) => ({
-    asyncGetStarCount() {
-        return dispatch(asyncGetStarCount())
+    asyncAddService(data) {
+        return dispatch(asyncAddService(data))
     },
 }))
-class Student extends Component {
+class AddService extends Component {
 
     config = {
-        navigationBarTitleText: '添加规则'
+        navigationBarTitleText: '添加服务'
     }
 
     state = {
-    }
-
-    componentDidShow() {
+        service: ''
     }
 
     render() {
+        const {service} = this.state;
 
         return (
             <View className='index'>
                 <View className='page-section'>
-                    <Text>添加规则</Text>
+                    <View className='task-title'>发布服务</View>
                 </View>
 
+                <AtForm
+                    onSubmit={this.onSubmit}
+                >
+
+                    <View className='form-item'>
+                        <AtTextarea
+                            value={service}
+                            onChange={this.handleChangeDescribe}
+                            maxLength={200}
+                            placeholder='输入服务描述'
+                        />
+                    </View>
+
+                    <View className='btn'>
+                        <AtButton
+                            formType='submit'
+                            type='primary'
+                            circle={true}
+                        >发布</AtButton>
+                    </View>
+                </AtForm>
             </View>
         )
     }
+
+    handleChangeDescribe = e => {
+        this.setState({service: e.target.value})
+    }
+
+    onSubmit = () => {
+        const {service} = this.state;
+        if (!service) {
+            Taro.showToast({
+                title: '请输入服务描述',
+                icon: 'none',
+            })
+        }
+
+        const {user: {info}} = this.props;
+        const data = {
+            token: info.token,
+            agency_id: info.user_id,
+            user_type: info.user_type,
+            service,
+        };
+
+        this.props.asyncAddService(data)
+            .then(res => {
+                const {code, data: response, msg} = res;
+                if (code !== 200) {
+                    Taro.showToast({
+                        title: msg,
+                        icon: 'none',
+                    });
+                } else {
+                    Taro.showToast({
+                        title: msg,
+                        icon: 'success',
+                    })
+                }
+            })
+            .catch(e => {
+                console.error(e);
+            })
+    }
 }
 
-export default Student
+export default AddService

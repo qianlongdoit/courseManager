@@ -1,12 +1,13 @@
 import Taro, {Component} from '@tarojs/taro'
-import {View, Button, Text} from '@tarojs/components'
+import {View,} from '@tarojs/components'
 import {
-    AtList,
-    AtListItem,
+    AtButton,
+    AtForm,
+    AtInput,
 } from 'taro-ui'
 import {connect} from '@tarojs/redux'
 
-import {asyncGetStarCount} from '../../actions/manager'
+import {asyncAddPrize} from '../../actions/manager'
 
 import './index.less'
 
@@ -16,33 +17,132 @@ import './index.less'
     user,
     manager,
 }), (dispatch) => ({
-    asyncGetStarCount() {
-        return dispatch(asyncGetStarCount())
+    asyncAddPrize(data) {
+        return dispatch(asyncAddPrize(data))
     },
 }))
-class Student extends Component {
+class AddPrize extends Component {
 
     config = {
-        navigationBarTitleText: '添加服务'
+        navigationBarTitleText: '发布奖品'
     }
 
     state = {
+        name: undefined,
+        stock: undefined,
+        cost: undefined,
     }
 
     componentDidShow() {
     }
 
     render() {
+        const {name, stock, cost} = this.state;
 
         return (
             <View className='index'>
                 <View className='page-section'>
-                    <Text>添加服务</Text>
+                    <View className='task-title'>添加奖品</View>
                 </View>
 
+                <AtForm
+                    onSubmit={this.onSubmit}
+                >
+                    <View className='form-item'>
+                        <AtInput
+                            name='name'
+                            title='名称'
+                            type='text'
+                            placeholder='输入名称'
+                            value={name}
+                            onChange={this.handleChangeName}
+                        />
+                    </View>
+
+                    <View className='form-item'>
+                        <AtInput
+                            name='stock'
+                            title='数量'
+                            type='number'
+                            placeholder='输入奖品总数'
+                            value={stock}
+                            onChange={this.handleChangeStock}
+                        />
+                    </View>
+
+                    <View className='form-item'>
+                        <AtInput
+                            name='cost'
+                            title='花费'
+                            type='number'
+                            placeholder='输入兑换需要数量'
+                            value={cost}
+                            onChange={this.handleChangeCost}
+                        />
+                    </View>
+
+                    <View className='btn'>
+                        <AtButton
+                            formType='submit'
+                            type='primary'
+                            circle={true}
+                        >发布</AtButton>
+                    </View>
+                </AtForm>
             </View>
         )
     }
+
+    handleChangeName = e =>{
+        this.setState({name: e})
+    }
+    handleChangeStock = e =>{
+        this.setState({stock: e});
+        return e;
+    }
+    handleChangeCost = e =>{
+        this.setState({cost: e});
+        return e;
+    }
+
+    onSubmit = () => {
+        const {name, stock, cost} = this.state;
+        if (!name || typeof stock === 'undefined' || typeof cost === 'undefined') {
+            Taro.showToast({
+                title: '请输入完整信息',
+                icon: 'none',
+            })
+        }
+
+        const {user: {info}} = this.props;
+        const data = {
+            token: info.token,
+            agency_id: info.user_id,
+            user_type: info.user_type,
+            name,
+            stock,
+            cost,
+        };
+
+        this.props.asyncAddPrize(data)
+            .then(res => {
+                const {code, data: response, msg} = res;
+                if (code !== 200) {
+                    Taro.showToast({
+                        title: msg,
+                        icon: 'none',
+                    });
+                } else {
+                    Taro.showToast({
+                        title: msg,
+                        icon: 'success',
+                    })
+                }
+            })
+            .catch(e => {
+                console.error(e);
+            })
+    }
 }
 
-export default Student
+export default AddPrize

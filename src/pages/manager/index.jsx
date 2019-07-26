@@ -1,65 +1,73 @@
 import Taro, {Component} from '@tarojs/taro'
-import {View, Button, Text, Picker } from '@tarojs/components'
-import { AtForm } from 'taro-ui'
+import {View, Button, Text} from '@tarojs/components'
+import {
+    AtList,
+    AtListItem,
+} from 'taro-ui'
 import {connect} from '@tarojs/redux'
 
-import {add, minus, asyncAdd} from '../../actions/student'
+// import {asyncGetStarCount} from '../../actions/manager'
 
 import './index.less'
 
+const AGENCY_ROUTE = [
+    {title: '增加服务', url: '/pages/manager-addService/index'},
+    {title: '增加排课', url: '/pages/manager-addClass/index'},
+    {title: '添加奖品', url: '/pages/manager-addPrize/index'},
+    {title: '添加规则', url: '/pages/manager-addRule/index'},
+];
 
-@connect(({counter}) => ({
-    counter
+
+@connect(({user, manager}) => ({
+    user,
+    manager,
 }), (dispatch) => ({
-    add() {
-        dispatch(add())
-    },
-    dec() {
-        dispatch(minus())
-    },
-    asyncAdd() {
-        dispatch(asyncAdd())
-    }
+    // asyncGetStarCount() {
+    //     return dispatch(asyncGetStarCount())
+    // },
 }))
 class Student extends Component {
 
     config = {
-        navigationBarTitleText: '家长'
+        navigationBarTitleText: '机构'
     }
 
     state = {
     }
 
-    componentWillReceiveProps(nextProps) {
-        console.log(this.props, nextProps)
-    }
-
-    componentWillUnmount() {
-    }
-
     componentDidShow() {
     }
 
-    componentDidHide() {
-    }
-
     render() {
-        const {selector} = this.state;
 
         return (
             <View className='index'>
                 <View className='page-section'>
                     <Text>管理人员</Text>
+                </View>
 
+                <View>
+                    <Text>功能选择：</Text>
+                </View>
+
+                <View>
+                    <AtList>
+                        {
+                            AGENCY_ROUTE.map((r, index) => (<AtListItem
+                                key={index}
+                                title={r.title}
+                                arrow='right'
+                                onClick={this.handleClick.bind(this, r)}
+                            />))
+                        }
+                    </AtList>
                 </View>
             </View>
         )
     }
 
-    onChange = e => {
-        this.setState({
-            selectorChecked: this.state.selector[e.detail.value]
-        })
+    handleClick = route => {
+        Taro.navigateTo({url: route.url});
     }
 }
 

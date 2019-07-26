@@ -1,10 +1,8 @@
-import * as ACTION from '../constants/teacher'
+import * as ACTION from '../constants/manager'
 
 const INITIAL_STATE = {
     list: [
-        {student_id: '编号', name: '姓名', star_count: '星数', checked: '选择'},
-        {student_id: '1', name: '王大锤', star_count: 5, checked: true},
-        {student_id: '2', name: '陆小凤', star_count: 15, checked: false},
+
     ],
 }
 
@@ -17,6 +15,38 @@ export default function manager(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 error: data
+            }
+        }
+        case ACTION.ADD_RULE: {
+            const {data} = action.payload;
+            console.log('ADD_RULE: ', data);
+
+            return {
+                ...state,
+            }
+        }
+        case ACTION.ADD_CLASS: {
+            const {data} = action.payload;
+            console.log('ADD_CLASS: ', data);
+
+            return {
+                ...state,
+            }
+        }
+        case ACTION.ADD_PRIZE: {
+            const {data} = action.payload;
+            console.log('ADD_PRIZE: ', data);
+
+            return {
+                ...state,
+            }
+        }
+        case ACTION.ADD_SERVICE: {
+            const {data} = action.payload;
+            console.log('ADD_SERVICE: ', data);
+
+            return {
+                ...state,
             }
         }
         default:
