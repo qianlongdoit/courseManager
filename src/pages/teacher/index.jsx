@@ -65,7 +65,7 @@ class Student extends Component {
         showMoreDetailModal: false,
         showModal: false,
         stars: 0,
-        current: 2,
+        current: 0,
     }
 
     componentDidShow() {
@@ -240,6 +240,10 @@ class Student extends Component {
                         icon: 'none',
                     });
                 } else {
+                    Taro.showToast({
+                        title: msg,
+                        icon: 'success',
+                    });
                     this.toggle();
                 }
         })

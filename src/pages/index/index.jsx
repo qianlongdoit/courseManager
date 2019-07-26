@@ -44,10 +44,10 @@ class Index extends Component {
             {title: '机构', user_type: 0},
         ],
         // selectorChecked: {title: '学生', user_type: 3},
-        // selectorChecked: {title: '老师', user_type: 1},
-        selectorChecked: {title: '机构', user_type: 0},
+        selectorChecked: {title: '老师', user_type: 1},
+        // selectorChecked: {title: '机构', user_type: 0},
         region: {
-            user_type: ["北京市", "北京市", "东城区"],
+            value: ["北京市", "北京市", "东城区"],
             code: ["110000", "110100", "110101"],
             postcode: ''
         },
@@ -57,10 +57,10 @@ class Index extends Component {
         // user_password: 'test2',
         // user_id: '001000100001',
         // user_password: 'test1',
-        // user_id: '0010001',
-        // user_password: 'test',
-        user_id: '001',
+        user_id: '0010001',
         user_password: 'test',
+        // user_id: '001',
+        // user_password: 'test',
     }
 
     render() {
@@ -97,7 +97,7 @@ class Index extends Component {
                                 <View className='picker'>
                                     <Text className='label'>选择区域：</Text>
                                     <Text className='form-user_type'>
-                                        {region.user_type[0]} {region.user_type[1]} {region.user_type[2]}
+                                        {region.value[0]} {region.value[1]} {region.value[2]}
                                     </Text>
                                 </View>
                             </Picker>
@@ -149,8 +149,14 @@ class Index extends Component {
             selectorChecked,
             user_id,
             user_password,
-            region: {user_type},
+            region: {value},
         } = this.state;
+
+        if (!user_id || !user_password) {
+            return Taro.showToast({
+                title: '请填写完整登陆信息!',
+            })
+        }
 
         let data = {
             user_id,
@@ -160,9 +166,9 @@ class Index extends Component {
 
         if (selectorChecked.user_type === 3) {
             data = Object.assign({
-                province: user_type[0],
-                city: user_type[1],
-                region: user_type[2]
+                province: value[0],
+                city: value[1],
+                region: value[2]
             }, data);
         }
 
