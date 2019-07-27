@@ -115,7 +115,9 @@ class AddRule extends Component {
                     Taro.showToast({
                         title: msg,
                         icon: 'success',
-                    })
+                    });
+                    this.setState({title: '', describe: '',});
+                    Taro.navigateTo({url: '/pages/manager/index'});
                 }
             })
             .catch(e => {

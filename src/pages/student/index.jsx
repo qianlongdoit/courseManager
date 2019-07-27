@@ -114,25 +114,27 @@ class Student extends Component {
                     isOpened={showModal}
                     onClose={this.toggle}
                 >
-                    <AtModalHeader>标题</AtModalHeader>
+                    <AtModalHeader>兑换确认</AtModalHeader>
                     <AtModalContent>
                         <View>
-                            确认花费
+                            将花费
                             <Text className='count'>{selectItem.cost}</Text>
                             星兑换奖品
                             <Text className='item'>{selectItem.name}</Text>
-                            吗？
+                            !
                         </View>
 
                         <View className='form-item'>
-                            <View className='h3'>选择收货地址</View>
                             <Picker
                                 mode='region'
                                 range={this.state.selector}
                                 onChange={this.onRegionChange}
                             >
                                 <View className='picker'>
-                                    当前选择：{`${region.value[0]} - ${region.value[1]} - ${region.value[2]}`}
+                                    选择收货地址：
+                                    <Text className='address'>
+                                        {`${region.value[0]} - ${region.value[1]} - ${region.value[2]}`}
+                                    </Text>
                                 </View>
                             </Picker>
                         </View>

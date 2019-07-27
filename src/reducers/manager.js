@@ -2,7 +2,8 @@ import * as ACTION from '../constants/manager'
 
 const INITIAL_STATE = {
     list: [
-
+        {teacher_id: "0010001", subject: "语文", name: "高晓松"},
+        {teacher_id: "0010001", subject: "数学", name: "李永乐"},
     ],
 }
 
@@ -15,6 +16,15 @@ export default function manager(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 error: data
+            }
+        }
+        case ACTION.GET_TEACHER_INFO: {
+            const {data} = action.payload;
+            console.log('GET_TEACHER_INFO: ', data);
+
+            return {
+                ...state,
+                list: data.data
             }
         }
         case ACTION.ADD_RULE: {

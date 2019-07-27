@@ -135,12 +135,22 @@ class AddPrize extends Component {
                     Taro.showToast({
                         title: msg,
                         icon: 'success',
-                    })
+                    });
+                    this.resetForm();
+                    Taro.navigateTo({url: '/pages/manager/index'});
                 }
             })
             .catch(e => {
                 console.error(e);
             })
+    }
+
+    resetForm = () => {
+        this.setState({
+            name: undefined,
+            stock: undefined,
+            cost: undefined,
+        })
     }
 }
 

@@ -127,7 +127,7 @@ class Student extends Component {
                     <AtModalHeader>规则详情</AtModalHeader>
                     <AtModalContent>
                         <View>
-                            {selectedRule.detail}
+                            {selectedRule.describe}
                         </View>
                     </AtModalContent>
                     <AtModalAction>
@@ -188,7 +188,7 @@ class Student extends Component {
         // TODO: 获取机构id
         const data = {
             token: info.token,
-            angency_id: `${info.user_id}`.slice(0, 3),
+            agency_id: `${info.user_id}`.slice(0, 3),
             user_type: info.user_type,
         };
 
@@ -222,7 +222,7 @@ class Student extends Component {
     handleConfirm = () => {
         const {stars} = this.state;
         const {teacher = {}, user: {info}} = this.props;
-        const students = (teacher.list || []).filter((l, index) => !!l.checked && index).map(l => l.student_id);
+        const students = (teacher.list || []).filter((l, index) => !!l.checked && !!index).map(l => l.student_id);
 
         const data = {
             count: stars,
@@ -230,6 +230,13 @@ class Student extends Component {
             user_type: info.user_type,
             token: info.token,
         };
+
+        if (!students.length || !stars) {
+            return Taro.showToast({
+                title: '请选择学生或者星数',
+                icon: 'none'
+            })
+        }
 
         this.props.asyncEditStar(data)
             .then(res => {

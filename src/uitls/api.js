@@ -19,6 +19,7 @@ export default {
   STUDENT_STATUS: 'teacher/get_students.do',
 
   //  机构
+  GET_TEACHER_INFO: 'agency/get_teachers.do',
   ADD_SERVICE: 'agency/add_service.do',
   ADD_CLASS: 'agency/add_class.do',
   ADD_PRIZE: 'agency/add_prize.do',

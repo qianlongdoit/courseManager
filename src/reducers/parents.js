@@ -16,11 +16,10 @@ export default function parents (state = INITIAL_STATE, action) {
         }
         case ACTION.GET_STAR_COUNT:{
             const {data} = action.payload;
-            console.log('GET_STAR_COUNT: ', data);
 
             return {
                 ...state,
-                starCount: data.star_count
+                starCount: data.data.star_count
             }
         }
         default:

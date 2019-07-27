@@ -11,6 +11,14 @@ export const netError = res =>{
         }
     }
 }
+export const getTeacherInfo = res =>{
+    return {
+        type: ACTION.GET_TEACHER_INFO,
+        payload: {
+            data: res
+        }
+    }
+}
 export const addRule = res =>{
     return {
         type: ACTION.ADD_RULE,
@@ -45,6 +53,30 @@ export const addService = res =>{
 }
 
 
+export const asyncGetTeacherInfo = (data) => {
+    return dispatch => {
+        return new Promise((resolve, reject) => {
+            Taro.request({
+                url: `${url}${api.GET_TEACHER_INFO}`,
+                data: JSON.stringify({data}),
+                method: 'POST',
+                header: {
+                    'content-type': 'application/json'
+                },
+            })
+                .then(res => {
+                    const {data: response = {}} = res;
+                    dispatch(getTeacherInfo(response));
+                    resolve(response)
+                })
+                .catch(e => {
+                    debugger
+                    dispatch(netError(e));
+                    reject(e)
+                })
+        })
+    }
+}
 export const asyncAddRule = (data) => {
     return dispatch => {
         return new Promise((resolve, reject) => {

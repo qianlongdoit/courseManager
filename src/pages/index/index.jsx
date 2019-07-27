@@ -12,8 +12,8 @@ import {asyncLogin, login} from '../../actions/user'
 import './index.less'
 
 const LOGIN_URL = {
-    '3': '/pages/student/index',
-    '2': '/pages/parents/index',
+    '2': '/pages/student/index',
+    '3': '/pages/parents/index',
     '1': '/pages/teacher/index',
     '0': '/pages/manager/index',
 }
@@ -37,15 +37,16 @@ class Index extends Component {
 
     state = {
         info: {},
+        loading: false,
         selector: [
-            {title: '学生', user_type: 3},
-            {title: '家长', user_type: 2},
+            {title: '家长', user_type: 3},
+            {title: '学生', user_type: 2},
             {title: '老师', user_type: 1},
             {title: '机构', user_type: 0},
         ],
-        selectorChecked: {title: '学生', user_type: 3},
+        // selectorChecked: {title: '学生', user_type: 2},
         // selectorChecked: {title: '老师', user_type: 1},
-        // selectorChecked: {title: '机构', user_type: 0},
+        selectorChecked: {title: '机构', user_type: 0},
         region: {
             value: ["北京市", "北京市", "东城区"],
             code: ["110000", "110100", "110101"],
@@ -53,18 +54,19 @@ class Index extends Component {
         },
         // user_id: '',
         // user_password: '',
-        user_id: '001000100001',
-        user_password: 'test2',
         // user_id: '001000100001',
+        // user_password: 'test2',
+        // user_id: '001000100001',    //学生
         // user_password: 'test1',
         // user_id: '0010001',
         // user_password: 'test',
-        // user_id: '001',
-        // user_password: 'test',
+        user_id: '001',
+        user_password: 'test',
     }
 
     render() {
         const {
+            loading,
             selector,
             selectorChecked,
             region,
@@ -88,7 +90,7 @@ class Index extends Component {
                 >
                     <View>
                         {
-                            selectorChecked.user_type === 3 &&
+                            selectorChecked.user_type === 2 &&
                             <Picker
                                 mode="region"
                                 user_type={region.code}
@@ -121,7 +123,7 @@ class Index extends Component {
                         </View>
 
                         <AtButton
-                            loading={false}
+                            loading={loading}
                             type='primary'
                             formType='submit'
                         >登陆</AtButton>
@@ -172,6 +174,7 @@ class Index extends Component {
             }, data);
         }
 
+        this.setState({loading: true});
         this.props.asyncLogin(data)
             .then(res => {
                 const {code, data: response, msg} = res;
@@ -185,8 +188,10 @@ class Index extends Component {
                         url: LOGIN_URL[selectorChecked.user_type]
                     });
                 }
+                this.setState({loading: false})
             })
             .catch(e => {
+                this.setState({loading: false})
                 console.error(e);
             })
     }

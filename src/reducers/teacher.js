@@ -1,5 +1,6 @@
 import * as ACTION from '../constants/teacher'
 
+const TABLE_HEAD = {student_id: '编号', name: '姓名', star_count: '星数', checked: '选择'}
 const INITIAL_STATE = {
     rules: [
         {id: '1', title: '2倍奖励', detail: '评分高于90%的学生', time: ''},
@@ -44,7 +45,6 @@ export default function teacher(state = INITIAL_STATE, action) {
         }
         case ACTION.GET_RULES: {
             const {data} = action.payload;
-            console.log("GET_RULES: ", data.data);
 
             return {
                 ...state,
@@ -67,10 +67,10 @@ export default function teacher(state = INITIAL_STATE, action) {
         }
         case ACTION.GET_STUDENT_STATUS: {
             const {data} = action.payload;
-
+            console.log([TABLE_HEAD, ...data.data]);
             return {
                 ...state,
-                list: data.data
+                list: [TABLE_HEAD, ...data.data]
             }
         }
         default:

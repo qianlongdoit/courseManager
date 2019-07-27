@@ -23,9 +23,6 @@ class Student extends Component {
         navigationBarTitleText: '家长'
     }
 
-    state = {
-    }
-
     componentDidShow() {
         this.getStudentStar();
     }

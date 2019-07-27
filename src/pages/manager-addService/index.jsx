@@ -97,7 +97,9 @@ class AddService extends Component {
                     Taro.showToast({
                         title: msg,
                         icon: 'success',
-                    })
+                    });
+                    this.setState({service: ''});
+                    Taro.navigateTo({url: '/pages/manager/index'});
                 }
             })
             .catch(e => {

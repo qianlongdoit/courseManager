@@ -7,6 +7,8 @@ import {
 
 import './index.less'
 import Title from '../../components/common-title'
+import {connect} from "@tarojs/redux";
+import {asyncGetTeacherInfo} from "../../actions/manager";
 
 const AGENCY_ROUTE = [
     {title: '增加服务', url: '/pages/manager-addService/index'},
@@ -15,7 +17,14 @@ const AGENCY_ROUTE = [
     {title: '添加规则', url: '/pages/manager-addRule/index'},
 ];
 
-
+@connect(({user, manager}) => ({
+    user,
+    manager,
+}), (dispatch) => ({
+     asyncGetTeacherInfo(data) {
+        return  dispatch(asyncGetTeacherInfo(data))
+    },
+}))
 class Student extends Component {
 
     config = {
@@ -26,6 +35,12 @@ class Student extends Component {
     }
 
     componentDidShow() {
+        const {user: {info}} = this.props;
+        const data = {
+            token: info.token,
+            user_type: info.user_type,
+        }
+        this.props.asyncGetTeacherInfo(data)
     }
 
     render() {
