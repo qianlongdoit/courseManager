@@ -80,7 +80,7 @@ export default function student(state = INITIAL_STATE, action) {
 
             return {
                 ...state,
-                taskList: data.data
+                rewardList: data.data
             }
         }
         case EXCHANGE_REWARD: {

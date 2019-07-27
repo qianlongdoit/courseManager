@@ -127,7 +127,7 @@ class Student extends Component {
                     <AtModalHeader>规则详情</AtModalHeader>
                     <AtModalContent>
                         <View>
-                            {selectedRule.describe}
+                            {selectedRule.detail}
                         </View>
                     </AtModalContent>
                     <AtModalAction>
@@ -188,7 +188,7 @@ class Student extends Component {
         // TODO: 获取机构id
         const data = {
             token: info.token,
-            // engency_id: info.user_id,
+            angency_id: `${info.user_id}`.slice(0, 3),
             user_type: info.user_type,
         };
 
@@ -220,12 +220,12 @@ class Student extends Component {
         this.setState({showModal: show});
     }
     handleConfirm = () => {
-        const {star} = this.state;
+        const {stars} = this.state;
         const {teacher = {}, user: {info}} = this.props;
         const students = (teacher.list || []).filter((l, index) => !!l.checked && index).map(l => l.student_id);
 
         const data = {
-            count: star,
+            count: stars,
             students,
             user_type: info.user_type,
             token: info.token,
@@ -245,6 +245,7 @@ class Student extends Component {
                         icon: 'success',
                     });
                     this.toggle();
+                    this.getStudentStatus();
                 }
         })
     }

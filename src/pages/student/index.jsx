@@ -7,6 +7,7 @@ import {
     AtModalHeader,
     AtTabs,
     AtTabsPane,
+    AtTextarea,
 } from 'taro-ui'
 import {connect} from '@tarojs/redux'
 
@@ -61,16 +62,22 @@ class Student extends Component {
     state = {
         current: 0,
         showModal: false,
+        address: '',
+        region: {
+            value: ["北京市", "北京市", "东城区"],
+            code: ["110000", "110100", "110101"],
+            postcode: ''
+        },
     }
 
     componentDidShow = () => {
         this.getStarCount();
         this.getTaskList();
-        // asyncGetRewardList(data);
+        this.getRewardList();
     }
 
     render() {
-        const {current, showModal} = this.state;
+        const {current, showModal, region, address} = this.state;
         const {student} = this.props;
         const {
             studentStars,
@@ -116,6 +123,28 @@ class Student extends Component {
                             <Text className='item'>{selectItem.name}</Text>
                             吗？
                         </View>
+
+                        <View className='form-item'>
+                            <View className='h3'>选择收货地址</View>
+                            <Picker
+                                mode='region'
+                                range={this.state.selector}
+                                onChange={this.onRegionChange}
+                            >
+                                <View className='picker'>
+                                    当前选择：{`${region.value[0]} - ${region.value[1]} - ${region.value[2]}`}
+                                </View>
+                            </Picker>
+                        </View>
+
+                        <View className='form-item'>
+                            <AtTextarea
+                                onChange={this.handleChangeAddress}
+                                maxLength={200}
+                                placeholder='填写详细地址，如街道、门牌号'
+                                placeholderClass={`{fontSize: '12px', color: '#333'}`}
+                            />
+                        </View>
                     </AtModalContent>
                     <AtModalAction>
                         <Button
@@ -128,6 +157,15 @@ class Student extends Component {
                 </AtModal>
             </View>
         )
+    }
+
+
+    onRegionChange = (e) => {
+        this.setState({region: e.detail})
+    }
+
+    handleChangeAddress = e => {
+        this.setState({address: e.target.value});
     }
 
     handleChangeTab = value => this.setState({current: value})
@@ -165,13 +203,27 @@ class Student extends Component {
         return (task_id) => asyncAcceptTask({...data, task_id});
     }
 
+    getRewardList = () => {
+        const {user: {info}} = this.props;
+        const data = {
+            token: info.token,
+            student_id: info.user_id,
+            user_type: info.user_type,
+        };
+
+        this.props.asyncGetRewardList(data);
+    }
+
     exchangeReward = () => {
-        const {user: {info}, selectItem = {}} = this.props;
+        const {region, address} = this.state;
+        const {user: {info}, student: {selectItem = {}}} = this.props;
+        //  TODO: 获取地址
         const data = {
             token: info.token,
             student_id: info.user_id,
             user_type: info.user_type,
             prize_id: selectItem.id,
+            address: `${region.value.join('-')}, ${address}`,
         };
 
         this.props.asyncExchangeReward(data)

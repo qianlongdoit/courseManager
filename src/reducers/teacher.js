@@ -2,8 +2,8 @@ import * as ACTION from '../constants/teacher'
 
 const INITIAL_STATE = {
     rules: [
-        {id: '1', title: '2倍奖励', describe: '评分高于90%的学生', time: ''},
-        {id: '2', title: '0.8倍奖励', describe: '评分低于90%的学生', time: ''},
+        {id: '1', title: '2倍奖励', detail: '评分高于90%的学生', time: ''},
+        {id: '2', title: '0.8倍奖励', detail: '评分低于90%的学生', time: ''},
     ],
     selectedRule: {},
     list: [
@@ -48,7 +48,7 @@ export default function teacher(state = INITIAL_STATE, action) {
 
             return {
                 ...state,
-                // rules: data.data
+                rules: data.data
             }
         }
         case ACTION.PUBLISH_RULE: {
@@ -70,6 +70,7 @@ export default function teacher(state = INITIAL_STATE, action) {
 
             return {
                 ...state,
+                list: data.data
             }
         }
         default:

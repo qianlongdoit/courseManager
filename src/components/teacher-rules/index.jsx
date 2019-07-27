@@ -37,7 +37,7 @@ class UserInfo extends Component {
                                 key={index}
                                 arrow='right'
                                 title={`${t.id}. ${t.title}`}
-                                note={`${t.describe}`}
+                                note={`${t.detail}`}
                                 iconInfo={{size: 25, color: '#939393', value: 'list'}}
                                 onClick={this.props.selectRule.bind(this, t)}
                             />

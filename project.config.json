@@ -2,7 +2,7 @@
 	"miniprogramRoot": "dist/",
 	"projectname": "course",
 	"description": "课程管理系统",
-	"appid": "wxeaeeb6f5f36e04cd",
+	"appid": "wx115fa5c7d49c9677",
 	"setting": {
 		"urlCheck": false,
 		"es6": false,

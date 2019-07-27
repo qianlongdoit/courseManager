@@ -47,7 +47,7 @@ export const publishRule = (res) => {
 }
 export const editCount = (res) => {
     return {
-        type: action.EDIT_COUNT,
+        type: action.EDIT_STAR,
         payload: {
             data: res
         }
@@ -68,7 +68,7 @@ export const asyncGetRules = (data) => {
     return dispatch => {
         return new Promise((resolve, reject) => {
             Taro.request({
-                url: `${url}${api.GET_STAR_COUNT}`,
+                url: `${url}${api.GET_RULE}`,
                 data: JSON.stringify({data}),
                 method: 'POST',
                 header: {

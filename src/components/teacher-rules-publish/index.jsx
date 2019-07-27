@@ -10,6 +10,13 @@ import {
 
 import './index.less'
 
+const INITIAL_STATE = {
+    title: '',
+    detail: '',
+    reward: 3,
+    deadline: '20XX-XX-XX',
+}
+
 class UserInfo extends Component {
 
     config = {
@@ -17,16 +24,11 @@ class UserInfo extends Component {
     }
 
     state = {
-        task: {
-            title: '',
-            describe: '',
-            reward: 3,
-            deadline: '20XX-XX-XX',
-        }
+        task: INITIAL_STATE
     }
 
     render() {
-        const {task: {title, describe, reward, deadline}} = this.state;
+        const {task: {title, detail, reward, deadline}} = this.state;
 
         return (
             <View className='task-publish'>
@@ -48,7 +50,7 @@ class UserInfo extends Component {
 
                     <View className='form-item'>
                         <AtTextarea
-                            value={describe}
+                            value={detail}
                             onChange={this.handleChangeDescribe}
                             maxLength={200}
                             placeholder='输入任务描述'
@@ -103,9 +105,14 @@ class UserInfo extends Component {
                         title: msg,
                         icon: 'success',
                     });
+                    Taro.navigateTo({url: '/pages/teacher/index'});
                     this.getStarCount();
                 }
             })
+    }
+
+    reSetForm = () => {
+        this.setState({task: INITIAL_STATE});
     }
 
     handleChangeTitle = (e) => {
@@ -114,7 +121,7 @@ class UserInfo extends Component {
     }
     handleChangeDescribe = (e) => {
         const {task} = this.state;
-        this.setState({task: {...task, describe: e.target.value}})
+        this.setState({task: {...task, detail: e.target.value}})
     }
     handleChangeReward = (e) => {
         const {task} = this.state;
