@@ -11,10 +11,11 @@ import {connect} from "@tarojs/redux";
 import {asyncGetTeacherInfo} from "../../actions/manager";
 
 const AGENCY_ROUTE = [
-    {title: '增加服务', url: '/pages/manager-addService/index'},
+    {title: '选择服务', url: '/pages/manager-addService/index'},
     {title: '增加排课', url: '/pages/manager-addClass/index'},
     {title: '添加奖品', url: '/pages/manager-addPrize/index'},
     {title: '添加规则', url: '/pages/manager-addRule/index'},
+    {title: '老师管理', url: '/pages/manager-teacher/index'},
 ];
 
 @connect(({user, manager}) => ({

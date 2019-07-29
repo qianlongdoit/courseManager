@@ -45,8 +45,8 @@ class Index extends Component {
             {title: '机构', user_type: 0},
         ],
         // selectorChecked: {title: '学生', user_type: 2},
-        // selectorChecked: {title: '老师', user_type: 1},
-        selectorChecked: {title: '机构', user_type: 0},
+        selectorChecked: {title: '老师', user_type: 1},
+        // selectorChecked: {title: '机构', user_type: 0},
         region: {
             value: ["北京市", "北京市", "东城区"],
             code: ["110000", "110100", "110101"],
@@ -58,10 +58,10 @@ class Index extends Component {
         // user_password: 'test2',
         // user_id: '001000100001',    //学生
         // user_password: 'test1',
-        // user_id: '0010001',
-        // user_password: 'test',
-        user_id: '001',
+        user_id: '0010001',
         user_password: 'test',
+        // user_id: '001',
+        // user_password: 'test',
     }
 
     render() {

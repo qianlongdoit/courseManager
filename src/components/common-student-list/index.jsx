@@ -15,29 +15,30 @@ class Star extends Component {
 
     render() {
         const {
-            index,
+            type,
             item = {},
             // toggleChecked
         } = this.props;
         const {student_id, name, star_count, checked} = item;
+        const isHead = type === 'thead';
 
         return (
             <View className='student-list'>
-                <View className={!index ? 'head' : 'id'}>{student_id}</View>
-                <View className={!index ? 'head' : 'name'}>{name}</View>
-                <View className={!index ? 'head' : 'count'}>
+                <View className={isHead ? 'head' : 'id'}>{`${student_id}`.slice(-5)}</View>
+                <View className={isHead ? 'head' : 'name'}>{name}</View>
+                <View className={isHead ? 'head' : 'count'}>
                     {
-                        !index
+                        isHead
                             ? star_count
                             : <Stars count={star_count} size={12}/>
                     }
                 </View>
                 {
-                    !index
+                    isHead
                         ? <View>{checked}</View>
                         : <View
                             className='check-box'
-                            onClick={this.handleChecked.bind(this, index)}
+                            onClick={this.handleChecked.bind(this, type)}
                         >
                             <AtIcon value='check' size={16} color={checked ? COLOR[0] : COLOR[1]}/>
                         </View>

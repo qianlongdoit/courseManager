@@ -1,12 +1,12 @@
 import Taro, {Component} from '@tarojs/taro'
-import {View, Button, Text} from '@tarojs/components'
+import {View, Button, Text, Picker} from '@tarojs/components'
 import {
     AtModal,
     AtModalAction,
     AtModalContent,
     AtModalHeader, AtRate,
     AtTabs,
-    AtTabsPane,
+    AtTabsPane, AtTag,
 } from 'taro-ui'
 import {connect} from '@tarojs/redux'
 
@@ -30,6 +30,12 @@ const TABLE_LIST = [
     {title: '学生评分'},
     // {title: '学生信息'},
 ];
+const LEVEL = [
+    {title: 'A', value: 4},
+    {title: 'B', value: 3},
+    {title: 'C', value: 2},
+    {title: 'D', value: 1},
+]
 
 
 @connect(({user, teacher}) => ({
@@ -66,6 +72,7 @@ class Student extends Component {
         showModal: false,
         stars: 0,
         current: 0,
+        level: {title: 'B', value: 3},
     }
 
     componentDidShow() {
@@ -79,6 +86,7 @@ class Student extends Component {
             showModal,
             showMoreDetailModal,
             stars,
+            level,
         } = this.state;
         const {
             teacher = {},
@@ -145,18 +153,27 @@ class Student extends Component {
                 >
                     <AtModalHeader>选择评定等级</AtModalHeader>
                     <AtModalContent>
-                        <View className='stars'>
+                        {/*<View className='stars'>
                             <Text>星数：</Text>
                             <AtRate
                                 max={5}
                                 value={stars}
                                 onChange={this.handleChangeStars}
                             />
-                        </View>
-                        {/*<View className='level'>
-                            <Text>等级：</Text>
-                            {'A'}
                         </View>*/}
+                        <View className='level'>
+                            <Picker
+                                mode='selector'
+                                range-key='title'
+                                range={LEVEL}
+                                onChange={this.onLevelChange}
+                            >
+                                <View className='picker'>
+                                    <Text className='label'>评分：</Text>
+                                    <AtTag customStyle={{color: 'red'}} type='primary'>{level.title}</AtTag>
+                                </View>
+                            </Picker>
+                        </View>
                     </AtModalContent>
                     <AtModalAction>
                         <Button
@@ -185,7 +202,6 @@ class Student extends Component {
 
     getStudentStatus = () => {
         const {user: {info}} = this.props;
-        // TODO: 获取机构id
         const data = {
             token: info.token,
             agency_id: `${info.user_id}`.slice(0, 3),
@@ -220,20 +236,22 @@ class Student extends Component {
         this.setState({showModal: show});
     }
     handleConfirm = () => {
-        const {stars} = this.state;
+        const {stars, level} = this.state;
         const {teacher = {}, user: {info}} = this.props;
-        const students = (teacher.list || []).filter((l, index) => !!l.checked && !!index).map(l => l.student_id);
+        const students = (teacher.list || []).filter((l, index) => !!l.checked && !!index)
+            .map(l => l.student_id)
+            .join(',');
 
         const data = {
-            count: stars,
+            count: level.value,
             students,
             user_type: info.user_type,
             token: info.token,
         };
 
-        if (!students.length || !stars) {
+        if (!students.length || !level.title) {
             return Taro.showToast({
-                title: '请选择学生或者星数',
+                title: '请选择学生或者评分',
                 icon: 'none'
             })
         }
@@ -254,10 +272,13 @@ class Student extends Component {
                     this.toggle();
                     this.getStudentStatus();
                 }
-        })
+            })
     }
     handleChangeStars = (e) => {
         this.setState({stars: e});
+    }
+    onLevelChange = e => {
+        this.setState({level: LEVEL[e.detail.value]});
     }
 }
 

@@ -39,8 +39,13 @@ class Student extends Component {
                     </View>
 
                     <View className='list'>
-                        星星数量：
-                        <Stars count={starCount}/>
+                        成绩：
+                    </View>
+                    <View className='list'>
+                        名次：
+                    </View>
+                    <View className='list'>
+                        今日评分：
                     </View>
                 </View>
             </View>

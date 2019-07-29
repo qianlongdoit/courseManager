@@ -20,8 +20,8 @@ const INITIAL_STATE = {
         reduce_count: 0,
     },
     taskList: [
-        {id: 1, title: '任务标题1', describe: '描述信息', deadline: '2019-07-12 20:00:00', reward: '这里是奖励'},
-        {id: 2, title: '任务标题2', describe: '描述信息2', deadline: '', reward: ''},
+        {id: 1, title: '任务标题1', describe: '描述信息', deadline: '2019-07-12 20:00:00', reward: '这里是奖励', status: 0},
+        {id: 2, title: '任务标题2', describe: '描述信息2', deadline: '', reward: '', status: 1},
     ],
     selectItem: {id: 1, name: '凌美钢笔', stock: 100, cost: 30},
     rewardList: [

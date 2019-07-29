@@ -139,14 +139,17 @@ class Student extends Component {
                             </Picker>
                         </View>
 
-                        <View className='form-item'>
-                            <AtTextarea
-                                onChange={this.handleChangeAddress}
-                                maxLength={200}
-                                placeholder='填写详细地址，如街道、门牌号'
-                                placeholderClass={`{fontSize: '12px', color: '#333'}`}
-                            />
-                        </View>
+                        {
+                            showModal &&
+                            <View className='form-item'>
+                                <AtTextarea
+                                    onChange={this.handleChangeAddress}
+                                    maxLength={200}
+                                    placeholder='填写详细地址，如街道、门牌号'
+                                    placeholderClass={`{fontSize: '12px', color: '#333'}`}
+                                />
+                            </View>
+                        }
                     </AtModalContent>
                     <AtModalAction>
                         <Button

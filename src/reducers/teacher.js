@@ -70,7 +70,8 @@ export default function teacher(state = INITIAL_STATE, action) {
             console.log([TABLE_HEAD, ...data.data]);
             return {
                 ...state,
-                list: [TABLE_HEAD, ...data.data]
+                // list: [TABLE_HEAD, ...data.data]
+                list: data.data
             }
         }
         default:

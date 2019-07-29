@@ -2,7 +2,7 @@ import Taro, {Component} from '@tarojs/taro'
 import {View, Text} from '@tarojs/components'
 import {
     AtButton,
-    AtForm,
+    AtForm, AtList, AtListItem,
     AtTextarea,
 } from 'taro-ui'
 import {connect} from '@tarojs/redux'
@@ -37,9 +37,26 @@ class AddService extends Component {
 
         return (
             <View className='index'>
-                <Title title='发布服务' />
+                <Title title='服务' />
 
-                <AtForm
+                <View className='service'>
+                    <AtList>
+                        <AtListItem
+                            arrow='right'
+                            title={`场地出租、教具提供`}
+                            note={`联系电话：13588888888`}
+                            iconInfo={{size: 25, color: '#939393', value: 'list'}}
+                        />
+                        <AtListItem
+                            arrow='right'
+                            title={`教师、外教`}
+                            note={`联系电话：13588888888`}
+                            iconInfo={{size: 25, color: '#939393', value: 'list'}}
+                        />
+                    </AtList>
+                </View>
+
+                {/*<AtForm
                     onSubmit={this.onSubmit}
                 >
 
@@ -59,7 +76,7 @@ class AddService extends Component {
                             circle={true}
                         >发布</AtButton>
                     </View>
-                </AtForm>
+                </AtForm>*/}
             </View>
         )
     }

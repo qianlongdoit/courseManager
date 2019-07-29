@@ -3,6 +3,7 @@ import {View, Button, Text, Picker} from '@tarojs/components'
 import {
     AtList,
     AtListItem,
+    AtIcon,
 } from 'taro-ui'
 
 import './index.less'
@@ -37,10 +38,18 @@ class DailyTask extends Component {
         const {task} = this.props;
         return (
             <View className='task-list'>
+                <View className='tips'>
+                    <Text>说明：</Text>
+                    <AtIcon value='check' size='18' color='#3ca440'/> 已完成
+                    <AtIcon value='loading' size='18' color='#939393'/> 进行中
+                    <AtIcon value='file-new' size='18' color='#939393'/> 未完成
+                </View>
                 <AtList>
                     {
                         (task || []).map((t, index) => {
-                            const hasComplete = !!t.deadline;
+                            const hasComplete = t.status === 0;
+                            const doing = t.status === 2;
+                            const undo = t.status === 1;
 
                             return <AtListItem
                                 key={index}
@@ -50,8 +59,10 @@ class DailyTask extends Component {
                                 extraText={`奖励 ${t.reward} 星`}
                                 iconInfo={
                                     hasComplete
-                                     ? {size: 25, color: '#3ca440', value: 'check'}
-                                     : {size: 25, color: '#939393', value: 'list'}
+                                        ? {size: 25, color: '#3ca440', value: 'check'}
+                                        : undo
+                                        ? {size: 25, color: '#939393', value: 'file-new'}
+                                        : {size: 25, color: '#939393', value: 'loading'}
                                 }
                                 onClick={this.handleAcceptTask.bind(this, t)}
                             />

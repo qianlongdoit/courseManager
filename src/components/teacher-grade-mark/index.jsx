@@ -5,32 +5,12 @@ import {
 } from 'taro-ui'
 import StudentList from '../../components/common-student-list'
 import './index.less'
+const TABLE_HEAD = {student_id: '编号', name: '姓名', star_count: '星数', checked: '选择'}
 
 class UserInfo extends Component {
 
     config = {
         navigationBarTitleText: '学生'
-    }
-
-    state = {
-        // list: [
-        //     {student_id: '编号', name: '姓名', star_count: '星数', checked: '选择'},
-        //     {student_id: '1', name: '王大锤', star_count: 5, checked: true},
-        //     {student_id: '2', name: '陆小凤', star_count: 15, checked: false},
-        // ],
-    }
-
-    componentWillReceiveProps(nextProps) {
-        // console.log(this.props, nextProps)
-    }
-
-    componentWillUnmount() {
-    }
-
-    componentDidShow() {
-    }
-
-    componentDidHide() {
     }
 
     render() {
@@ -39,6 +19,13 @@ class UserInfo extends Component {
 
         return (
             <View className='content'>
+                <View className='info' onClick={this.getAllStudent}>
+                    查看全部学生
+                </View>
+                <Text className='note'>
+                    操作提示：先选择学生后面的'√'，再进行评分，
+                    可一次选择多位学生进行评分
+                </Text>
                 <View className='edit'>
                     <AtButton
                         size='small'
@@ -48,6 +35,11 @@ class UserInfo extends Component {
                 </View>
 
                 <View className='students'>
+                    <StudentList
+                        type={'thead'}
+                        item={TABLE_HEAD}
+                    />
+
                     {
                         (list || []).map((t, index) => {
                             return <StudentList
@@ -61,6 +53,10 @@ class UserInfo extends Component {
                 </View>
             </View>
         )
+    }
+
+    getAllStudent = e => {
+        Taro.navigateTo({url: '/pages/teacher-students/index'})
     }
 }
 
