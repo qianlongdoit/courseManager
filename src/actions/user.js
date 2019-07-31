@@ -3,8 +3,8 @@ import {
     LOGIN,
     NET_ERROR,
 } from '../constants/user'
-import {url} from '../uitls/config'
-import api from '../uitls/api.js'
+import {url} from '../utils/config'
+import api from '../utils/api.js'
 
 export const netError = res => {
     return {

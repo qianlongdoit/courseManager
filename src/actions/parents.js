@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import * as ACTION from '../constants/parents'
-import {url} from '../uitls/config'
-import api from '../uitls/api.js'
+import {url} from '../utils/config'
+import api from '../utils/api.js'
 
 export const netError = res => {
     return {

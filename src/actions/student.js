@@ -8,8 +8,8 @@ import {
     EXCHANGE_REWARD,
     SELECT_REWARD,
 } from '../constants/student'
-import {url} from '../uitls/config'
-import api from '../uitls/api.js'
+import {url} from '../utils/config'
+import api from '../utils/api.js'
 
 export const netError = res =>{
     return {
