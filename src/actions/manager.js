@@ -70,7 +70,6 @@ export const asyncGetTeacherInfo = (data) => {
                     resolve(response)
                 })
                 .catch(e => {
-                    debugger
                     dispatch(netError(e));
                     reject(e)
                 })
