@@ -31,6 +31,24 @@ Taro cli版本 v1.3.10
 node 10.15.3 (>= 8.0.0)
 npm 6.4.1
 
+```bash
+Taro的安装
+# 使用 npm 安装 CLI
+$ npm install -g @tarojs/cli
+# OR 使用 yarn 安装 CLI
+$ yarn global add @tarojs/cli
+# OR 安装了 cnpm，使用 cnpm 安装 CLI
+$ cnpm install -g @tarojs/cli
+
+Taro的更新
+# taro
+$ taro update self
+# npm
+npm i -g @tarojs/cli@latest
+# yarn
+yarn global add @tarojs/cli@latest
+```
+
 ### 开发
 ```bash
 npm run dev:weapp
